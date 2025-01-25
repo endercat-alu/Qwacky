@@ -1,7 +1,5 @@
 # Qwacky
 
-Qwacky is a wrapper for DuckDuckGo email protection service to manage and generate @duck.com private address.
-
 > **⚠️ Disclaimer**: This is NOT an official DuckDuckGo product. Qwacky is an independent, open-source project and is not affiliated with, endorsed by, or connected to DuckDuckGo in any way. Use at your own risk.
 
 ## Features
