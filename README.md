@@ -1,10 +1,19 @@
 # Qwacky
 
+## Why Qwacky?
+
+I've been using DuckDuckGo's email protection service for a while and really appreciate it. However, the requirement to install the full DuckDuckGo extension came with some challenges:
+
+- You can't disable the tracking protection feature globally
+- You need to manually disable tracking protection for each website
+- The extension changes your default search engine to DuckDuckGo
+- No way to use just the email protection service standalone
+
+That's why I created Qwacky - initially for personal use, but I realized others might face the same issues. As someone who always wanted to contribute to the open-source community with helpful tools, I decided to share this project publicly.
+
 > **⚠️ Disclaimer**: This is NOT an official DuckDuckGo product. Qwacky is an independent, open-source project and is not affiliated with, endorsed by, or connected to DuckDuckGo in any way. Use at your own risk.
 
 ## Features
-
-- Of course you don't need to use DuckDuckGo extension anymore
 - Generate and manage private @duck.com email addresses
 - Auto-fill addresses in input fields from context menu integration for quick address generation
 - Store the generated addresses
