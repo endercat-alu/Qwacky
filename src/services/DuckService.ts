@@ -17,6 +17,8 @@ export class DuckService {
     const response = await this.auth.verifyOTP(username, otp)
     if (response.status === 'success') {
       await this.saveUserData(response)
+      // Clear login state after successful login
+      await chrome.storage.local.remove(['loginState', 'tempUsername'])
     }
     return response
   }
@@ -76,4 +78,4 @@ export class DuckService {
       await chrome.storage.local.set({ user_data: userData })
     }
   }
-} 
+}

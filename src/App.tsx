@@ -5,7 +5,7 @@ import { OTP } from './pages/OTP'
 import { Dashboard } from './pages/Dashboard'
 import { Header } from './components/Header'
 import { theme } from './theme'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const Container = styled.div`
   width: 360px;
@@ -19,6 +19,35 @@ export const App = () => {
   const [currentPage, setCurrentPage] = useState('login')
   const [tempUsername, setTempUsername] = useState('')
   
+  // Load persisted state on mount
+  useEffect(() => {
+    chrome.storage.local.get(['loginState', 'tempUsername'], (result) => {
+      if (result.loginState) {
+        setCurrentPage(result.loginState)
+      }
+      if (result.tempUsername) {
+        setTempUsername(result.tempUsername)
+      }
+    })
+  }, [])
+
+  // Save state changes to storage
+  const updateLoginState = (page: string, username?: string) => {
+    setCurrentPage(page)
+    chrome.storage.local.set({ loginState: page })
+    
+    if (username) {
+      setTempUsername(username)
+      chrome.storage.local.set({ tempUsername: username })
+    }
+  }
+
+  const resetLoginState = () => {
+    setCurrentPage('login')
+    setTempUsername('')
+    chrome.storage.local.remove(['loginState', 'tempUsername'])
+  }
+  
   return (
     <ThemeProvider theme={darkMode ? theme.dark : theme.light}>
       <Container>
@@ -27,8 +56,7 @@ export const App = () => {
         {!userData && currentPage === 'login' && (
           <Login 
             onSubmit={(username) => {
-              setTempUsername(username)
-              setCurrentPage('otp')
+              updateLoginState('otp', username)
             }}
           />
         )}
@@ -36,7 +64,7 @@ export const App = () => {
         {!userData && currentPage === 'otp' && (
           <OTP
             username={tempUsername}
-            onBack={() => setCurrentPage('login')}
+            onBack={() => resetLoginState()}
           />
         )}
         
@@ -44,4 +72,4 @@ export const App = () => {
       </Container>
     </ThemeProvider>
   )
-} 
+}
