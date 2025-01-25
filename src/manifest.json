@@ -1,0 +1,10 @@
+{
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ]
+} 
