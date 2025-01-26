@@ -17,7 +17,7 @@ const showNotification = (message: string) => {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #DE5833;
+    background: #ff9f19;
     color: white;
     padding: 16px 24px;
     border-radius: 8px;

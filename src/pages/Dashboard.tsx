@@ -155,7 +155,7 @@ export const Dashboard = () => {
     const notification = document.createElement("div");
     notification.style.cssText = `
       position: fixed;
-      background: #DE5833;
+      background: #ff9f19;
       color: white;
       padding: 8px 16px;
       border-radius: 4px;
