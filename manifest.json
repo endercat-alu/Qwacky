@@ -15,7 +15,8 @@
   "permissions": [
     "storage",
     "contextMenus",
-    "clipboardWrite"
+    "clipboardWrite",
+    "scripting"
   ],
   "background": {
     "service_worker": "background.js",

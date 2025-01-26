@@ -111,7 +111,7 @@ export const OTP = ({ username, onBack }: OTPProps) => {
         placeholder="e.g. morality landless proved paprika"
         value={otp}
         onChange={(e) => setOtp(e.target.value.toLowerCase())}
-        onKeyPress={handleKeyPress}
+        onKeyUp={handleKeyPress}
         disabled={loading}
         spellCheck={false}
         autoComplete="off"
