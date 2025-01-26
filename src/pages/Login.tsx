@@ -100,10 +100,10 @@ export const Login = ({ onSubmit }: LoginProps) => {
       <InputWrapper>
         <Input
           type="text"
-          placeholder="Enter duck address"
+          placeholder="Enter duck username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyUp={handleKeyPress}
           disabled={loading}
         />
         <Suffix>@duck.com</Suffix>

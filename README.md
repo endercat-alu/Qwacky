@@ -33,6 +33,7 @@ This extension requires the following permissions:
 - `storage`: Required to store your generated addresses and settings locally
 - `contextMenus`: Enables the right-click menu for quick address generation
 - `scripting`: Needed to auto-fill addresses in web forms
+- `clipboardWrite`: Needed to copy the generated address to the clipboard
 
 > All data is stored locally on your device. No data is sent to any third-party servers.
 
