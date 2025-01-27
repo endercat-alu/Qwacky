@@ -13,7 +13,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined)
 const duckService = new DuckService()
 
-export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }: { children: React.ReactNode }) => {
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('darkMode')
     return saved ? JSON.parse(saved) : false

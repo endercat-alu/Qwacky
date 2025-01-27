@@ -82,4 +82,7 @@ chrome.runtime.onMessage.addListener((message, _sender) => {
   if (message.type === 'show-notification') {
     showNotification(message.message)
   }
-}) 
+})
+
+
+export {} 
