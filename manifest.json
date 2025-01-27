@@ -16,7 +16,7 @@
     "storage",
     "contextMenus",
     "clipboardWrite",
-    "scripting"
+    "activeTab"
   ],
   "background": {
     "service_worker": "background.js",
@@ -30,11 +30,10 @@
     "js": ["contentScript.js"]
   }],
   "content_security_policy": {
-    "extension_pages": "script-src 'self' http://localhost:5173; object-src 'self'"
+    "extension_pages": "script-src 'self'; object-src 'self'"
   },
   "web_accessible_resources": [{
     "resources": ["icons/*"],
     "matches": ["chrome-extension://*/*"]
-  }],
-  "host_permissions": []
+  }]
 }

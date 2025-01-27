@@ -15,6 +15,11 @@ const TitleSection = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
+  
+  &:hover {
+    opacity: 0.8;
+  }
 `
 
 const Title = styled.h1`
@@ -59,16 +64,16 @@ export const Header = () => {
 
   return (
     <HeaderContainer>
-      <TitleSection>
+      <TitleSection onClick={openGitHub}>
         <Logo src="/icons/qwacky.png" alt="Qwacky" />
         <Title>Qwacky</Title>
       </TitleSection>
       <IconsSection>
-        <IconButton className="github" onClick={openGitHub}>
-          <FaGithub size={24} />
-        </IconButton>
         <IconButton onClick={toggleDarkMode}>
           {darkMode ? <MdLightMode size={24} /> : <MdDarkMode size={24} />}
+        </IconButton>
+        <IconButton className="github" onClick={openGitHub}>
+          <FaGithub size={24} />
         </IconButton>
         {userData && (
           <IconButton className="logout" onClick={logout}>

@@ -14,6 +14,10 @@ const Message = styled.p`
   font-weight: 500;
 `
 
+const DuckText = styled.span`
+  color: ${props => props.theme.primary};
+`
+
 const InputWrapper = styled.div`
   position: relative;
   margin-bottom: 16px;
@@ -96,7 +100,7 @@ export const Login = ({ onSubmit }: LoginProps) => {
 
   return (
     <Container>
-      <Message>Login to manage your @duck.com addresses</Message>
+      <Message>Login to manage your <DuckText>@duck.com</DuckText> addresses</Message>
       <InputWrapper>
         <Input
           type="text"
