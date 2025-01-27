@@ -17,13 +17,13 @@ That's why I created Qwacky - initially for personal use, but I realized others 
 - Auto-fill addresses in input fields from context menu for a quick address generation
 - Store the generated addresses
 
-## To Do
+## Planned Features (hopefully)
 
-- [ ] Autofill input icon (like password managers)
-- [ ] Create duck account
-- [ ] Change forwarding email
-- [ ] Delete duck account
+- [ ] Autofill input icon
 - [ ] Multiple accounts support
+- [ ] Change forwarding email
+- [ ] Create duck account
+- [ ] Delete duck account
 
 ## Permissions
 
