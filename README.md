@@ -46,7 +46,7 @@ This extension requires the following permissions with detailed explanations of 
 ## Installation
 
 ### Chrome Web Store
-[Get Qwacky](https://)
+Coming soon!
 
 ### Manual Installation
 1. Download the latest release from the [GitHub Releases](https://github.com/Lanshuns/Qwacky/releases) page
