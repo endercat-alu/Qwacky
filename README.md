@@ -22,8 +22,6 @@ That's why I created Qwacky - initially for personal use, but I realized others 
 - [ ] Autofill input icon
 - [ ] Multiple accounts support
 - [ ] Change forwarding email
-- [ ] Delete duck account
-
 
 ## Security & Privacy
 - Uses minimal permissions required for functionality
