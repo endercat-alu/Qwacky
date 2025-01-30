@@ -22,8 +22,6 @@ That's why I created Qwacky - initially for personal use, but I realized others 
 - [ ] Autofill input icon
 - [ ] Multiple accounts support
 - [ ] Change forwarding email
-- [ ] Delete duck account
-
 
 ## Security & Privacy
 - Uses minimal permissions required for functionality
@@ -46,7 +44,7 @@ This extension requires the following permissions with detailed explanations of 
 ## Installation
 
 ### Chrome Web Store
-[Get Qwacky](https://)
+Coming soon!
 
 ### Manual Installation
 1. Download the latest release from the [GitHub Releases](https://github.com/Lanshuns/Qwacky/releases) page
