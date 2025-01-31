@@ -101,3 +101,11 @@ LKYDeJWeo3kMG1TbY4cqSi87wFeR6YUXP2
 ```
 LKYDeJWeo3kMG1TbY4cqSi87wFeR6YUXP2
 ```
+
+## Acknowledgments
+
+This project is a derivative work based on DuckDuckGo's Email Protection service, which is licensed under the Apache License 2.0. The original work's copyright notice:
+
+Copyright (c) 2010-2021 Duck Duck Go, Inc.
+
+For the full license text, see [APACHE-LICENSE](https://github.com/duckduckgo/duckduckgo-privacy-extension/blob/main/LICENSE.md).
