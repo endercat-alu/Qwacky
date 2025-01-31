@@ -15,6 +15,9 @@ That's why I created Qwacky - initially for personal use, but I realized others 
 - Auto-fill addresses in input fields from context menu for a quick address generation
 - Store the generated addresses
 
+## Screenshots
+![](https://raw.githubusercontent.com/Lanshuns/Qwacky/refs/heads/main/screenshots/banner2.jpg)
+
 ## Planned Features
 
 - [ ] Autofill input icon
