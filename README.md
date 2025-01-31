@@ -81,29 +81,6 @@ npm run dev
 - Click "Load unpacked"
 - Select the `dist` folder
 
-## Support Development
-
-If you find Qwacky useful, consider supporting its development:
-
-**Bitcoin**
-```
-bc1qmmwwsn4cvpsx39sf53qsqcjyjzsqp90lus365w
-```
-
-**Litecoin**
-```
-LKYDeJWeo3kMG1TbY4cqSi87wFeR6YUXP2
-```
-
-**Ethereum**
-```
-0x08658772EeC32e72456048Be5D5a52bd3bcb01bc
-```
-
-**USDT (Tron)**
-```
-LKYDeJWeo3kMG1TbY4cqSi87wFeR6YUXP2
-```
 
 ## Acknowledgments
 
