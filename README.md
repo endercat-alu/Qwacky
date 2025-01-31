@@ -9,8 +9,6 @@ I've been using [DuckDuckGo Email Protection](https://duckduckgo.com/email) serv
 
 That's why I created Qwacky - initially for personal use, but I realized others might face the same issues. As someone who always wanted to contribute to the open-source community with helpful tools, I decided to share this project publicly.
 
-> **⚠️ Disclaimer**: This is NOT an official [DuckDuckGo](https://duckduckgo.com) product. Qwacky is an independent, open-source project and is not affiliated with, endorsed by, or connected to DuckDuckGo in any way. Use at your own risk.
-
 ## Features
 - Generate and manage private @duck.com email addresses
 - Copy the generated address to the clipboard
