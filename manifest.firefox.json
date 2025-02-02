@@ -1,12 +1,18 @@
 {
   "manifest_version": 3,
   "name": "Qwacky",
-  "version": "1.0.0",
-  "description": "Qwacky is a wrapper for DuckDuckGo email protection service to manage and generate @duck.com private address.",
+  "version": "1.0.1",
+  "description": "Qwacky is an open source client for DuckDuckGo Email Protection, To manage and generate @duck.com aliases. ",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "qwacky@local-v1.0.1",
+      "strict_min_version": "112.0"
+    }
+  },
   "icons": {
-    "16": "icons/qwacky.png",
-    "48": "icons/qwacky.png",
-    "128": "icons/qwacky.png"
+    "16": "icons/qwacky-16.png",
+    "48": "icons/qwacky-48.png",
+    "128": "icons/qwacky-128.png"
   },
   "action": {
     "default_popup": "index.html",
@@ -19,7 +25,7 @@
     "activeTab"
   ],
   "background": {
-    "service_worker": "background.js",
+    "scripts": ["browser-polyfill.js", "background.js"],
     "type": "module"
   },
   "content_scripts": [{
@@ -27,13 +33,13 @@
       "http://*/*",
       "https://*/*"
     ],
-    "js": ["contentScript.js"]
+    "js": ["browser-polyfill.js", "contentScript.js"]
   }],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
   },
   "web_accessible_resources": [{
     "resources": ["icons/*"],
-    "matches": ["chrome-extension://*/*"]
+    "matches": ["*://*/*"]
   }]
-}
+} 

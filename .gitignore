@@ -34,3 +34,9 @@ yarn-error.log*
 *.sln
 *.sw? 
 
+# Keep source icons
+!src/icons/
+
+# Ignore build artifacts
+dist/
+

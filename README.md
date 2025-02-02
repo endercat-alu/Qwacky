@@ -1,4 +1,4 @@
-## Why Qwacky?
+# Why Qwacky?
 
 I've been using [DuckDuckGo Email Protection](https://duckduckgo.com/email) service for a while and really appreciate it. However, the requirement to install the full DuckDuckGo extension came with some challenges:
 
@@ -26,7 +26,7 @@ That's why I created Qwacky - initially for personal use, but I realized others 
 - [ ] Change forwarding email
 - [ ] Delete duck account
 
-## Security & Privacy
+# Security & Privacy
 - Uses minimal permissions required for functionality
 - Only accesses tabs when explicitly requested by user action
 - All data is stored locally on your device
@@ -44,20 +44,45 @@ This extension requires the following permissions with detailed explanations of 
 
 > **Security Note**: The extension only accesses web pages when you explicitly use the context menu to generate an address. No automatic or background access to web pages occurs.
 
-## Installation
+## Browser Compatibility
+
+Qwacky is designed to work seamlessly on both Chrome and Firefox. The build process automatically handles browser-specific requirements:
+
+- **Chrome**: Uses service workers for background scripts (Manifest V3)
+- **Firefox**: Uses background scripts with polyfill support (Manifest V3)
+
+Both versions maintain feature parity while adhering to each browser's best practices and security models.
+
+# Installation
 
 ### Chrome Web Store
 Coming soon!
 
+### Firefox Add-ons
+Coming soon!
+
 ### Manual Installation
+
+#### Chrome
 1. Download the latest release from the [GitHub Releases](https://github.com/Lanshuns/Qwacky/releases) page
 2. Unzip the downloaded file
 3. Open Chrome and go to `chrome://extensions/`
 4. Enable "Developer mode" in the top right
 5. Click "Load unpacked" and select the unzipped folder
 
-## Development
+#### Firefox
+1. Download the Firefox version (.xpi file) from the [GitHub Releases](https://github.com/Lanshuns/Qwacky/releases) page
+2. Open Firefox and go to `about:addons`
+3. Click the gear icon and select "Install Add-on From File..."
+4. Select the downloaded .xpi file
 
+# Development
+
+### Prerequisites
+- Node.js (v16 or higher)
+- npm (v7 or higher)
+
+### Setup
 1. Clone the repository
 ```bash
 git clone https://github.com/Lanshuns/Qwacky.git
@@ -69,20 +94,39 @@ cd qwacky
 npm install
 ```
 
-3. Start development server
+### Development Mode
+
+#### For Chrome:
 ```bash
 npm run dev
 ```
 
-5. Load the extension
-- Open Chrome
-- Go to chrome://extensions/
-- Enable "Developer mode"
-- Click "Load unpacked"
-- Select the `dist` folder
+#### For Firefox:
+```bash
+npm run dev:firefox
+```
 
+### Production Build
 
-## Acknowledgments
+#### For Chrome:
+```bash
+npm run build
+```
+
+#### For Firefox:
+```bash
+npm run build:firefox
+```
+
+The built extension will be available in the `dist` directory.
+
+> **Note**: For development and temporary installation in Firefox, you can use `about:debugging` method:
+> 1. Go to `about:debugging`
+> 2. Click "This Firefox" in the left sidebar
+> 3. Click "Load Temporary Add-on"
+> 4. Select the `manifest.json` file from the unzipped folder
+
+# Acknowledgments
 
 This project is a derivative work based on DuckDuckGo's Email Protection service, which is licensed under the Apache License 2.0. The original work's copyright notice:
 
