@@ -1,3 +1,7 @@
+<p>
+  <img src="src/icons/qwacky.png" alt="Qwacky Logo" width="128" height="128">
+</p>
+
 # Why Qwacky?
 
 I've been using [DuckDuckGo Email Protection](https://duckduckgo.com/email) service for a while and really appreciate it. However, the requirement to install the full DuckDuckGo extension came with some challenges:
@@ -11,8 +15,8 @@ That's why I created Qwacky - initially for personal use, but I realized others 
 
 ## Download
 
-<p align="center">
-<a href="https://chromewebstore.google.com/detail/qwacky/kieehbhdbincplacegpjdkoglfakboeo"><img src="https://user-images.githubusercontent.com/585534/107280622-91a8ea80-6a26-11eb-8d07-77c548b28665.png" alt="Get Qwacky for Chrome"></a>
+<p>
+<a href="https://chromewebstore.google.com/detail/qwacky/kieehbhdbincplacegpjdkoglfakboeo" target="_blank"><img src="https://user-images.githubusercontent.com/585534/107280622-91a8ea80-6a26-11eb-8d07-77c548b28665.png" alt="Get Qwacky for Chrome"></a>
 </p>
 
 ### Firefox Add-ons
