@@ -9,6 +9,15 @@ I've been using [DuckDuckGo Email Protection](https://duckduckgo.com/email) serv
 
 That's why I created Qwacky - initially for personal use, but I realized others might face the same issues. As someone who always wanted to contribute to the open-source community with helpful tools, I decided to share this project publicly.
 
+## Download
+
+<p align="center">
+<a href="https://chromewebstore.google.com/detail/qwacky/kieehbhdbincplacegpjdkoglfakboeo"><img src="https://user-images.githubusercontent.com/585534/107280622-91a8ea80-6a26-11eb-8d07-77c548b28665.png" alt="Get Qwacky for Chrome"></a>
+</p>
+
+### Firefox Add-ons
+Coming soon!
+
 ## Features
 - Generate and manage private @duck.com email addresses
 - Copy the generated address to the clipboard
@@ -53,15 +62,8 @@ Qwacky is designed to work seamlessly on both Chrome and Firefox. The build proc
 
 Both versions maintain feature parity while adhering to each browser's best practices and security models.
 
-# Installation
 
-### Chrome Web Store
-Coming soon!
-
-### Firefox Add-ons
-Coming soon!
-
-### Manual Installation
+# Manual Installation
 
 #### Chrome
 1. Download the latest release from the [GitHub Releases](https://github.com/Lanshuns/Qwacky/releases) page
