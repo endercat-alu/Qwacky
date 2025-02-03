@@ -15,14 +15,15 @@ That's why I created Qwacky - initially for personal use, but I realized others 
 
 ## Download
 
-<p align="center">
-  <a href="https://chromewebstore.google.com/detail/qwacky/kieehbhdbincplacegpjdkoglfakboeo" target="_blank" style="display: inline-block; margin-right: 20px;">
+<p align="center" style="display: flex; justify-content: center; gap: 20px;">
+  <a href="https://chromewebstore.google.com/detail/qwacky/kieehbhdbincplacegpjdkoglfakboeo" target="_blank" rel="noopener noreferrer">
     <img src="https://user-images.githubusercontent.com/585534/107280622-91a8ea80-6a26-11eb-8d07-77c548b28665.png" alt="Get Qwacky for Chrome">
   </a>
-  <a href="https://addons.mozilla.org/en-US/firefox/addon/qwacky/" target="_blank" style="display: inline-block;">
+  <a href="https://addons.mozilla.org/en-US/firefox/addon/qwacky/" target="_blank" rel="noopener noreferrer">
     <img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="Get Qwacky for Firefox">
   </a>
 </p>
+
 
 ## Features
 - Generate and manage private @duck.com email addresses
