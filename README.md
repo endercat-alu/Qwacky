@@ -27,7 +27,7 @@ That's why I created Qwacky - initially for personal use, but I realized others 
 - Store the generated addresses
 
 ## Screenshots
-![](https://raw.githubusercontent.com/Lanshuns/Qwacky/refs/heads/main/screenshots/banner2.jpg)
+![](https://raw.githubusercontent.com/Lanshuns/Qwacky/refs/heads/main/images/banner2.png)
 
 ## Planned Features
 
