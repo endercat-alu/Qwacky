@@ -2,9 +2,7 @@ import { DuckService } from './services/DuckService'
 
 const duckService = new DuckService()
 
-// Remove existing menu item if it exists
 chrome.contextMenus.removeAll(() => {
-  // Create new menu item
   chrome.contextMenus.create({
     id: 'generate-duck-address',
     title: 'Generate Duck Address',
@@ -26,11 +24,20 @@ const injectContentScript = async (tabId: number) => {
 }
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-  // Check if tab exists and has a valid ID
   if (!tab?.id || tab.id < 0) return
   
   if (info.menuItemId === 'generate-duck-address') {
-    const response = await duckService.generateAddress()
+    let domain = '';
+    if (tab.url) {
+      try {
+        const url = new URL(tab.url);
+        domain = url.hostname;
+      } catch (e) {
+        console.error('Failed to parse URL:', e);
+      }
+    }
+
+    const response = await duckService.generateAddress(domain || undefined)
     
     if (response.status === 'error') {
       try {
@@ -39,7 +46,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
           message: 'You must login first!'
         })
       } catch (error) {
-        // Inject content script and try again
         if (await injectContentScript(tab.id)) {
           chrome.tabs.sendMessage(tab.id, {
             type: 'show-notification',
@@ -56,7 +62,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
         address: response.address
       })
     } catch (error) {
-      // Inject content script and try again
       if (await injectContentScript(tab.id)) {
         chrome.tabs.sendMessage(tab.id, {
           type: 'fill-address',
@@ -67,7 +72,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   }
 })
 
-// Handle messages from popup
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   if (request.action === 'requestOTP') {
     duckService.login(request.username).then(sendResponse)

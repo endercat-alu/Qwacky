@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { useState } from 'react'
 import { DuckService } from '../services/DuckService'
+import { MdArrowBack } from 'react-icons/md'
 
 const Container = styled.div`
   padding: 24px;
@@ -67,11 +68,34 @@ const ErrorMessage = styled.p`
   font-size: 14px;
 `
 
+const BackButton = styled.button`
+  background: none;
+  border: none;
+  color: ${props => props.theme.primary};
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+  margin-bottom: 16px;
+  align-self: flex-start;
+`;
+
+const VersionInfo = styled.div`
+  margin-top: 32px;
+  text-align: center;
+  font-size: 14px;
+  color: ${(props) => props.theme.textSecondary};
+`;
+
 interface LoginProps {
   onSubmit: (username: string) => void;
+  isAddingAccount?: boolean;
+  onBack?: () => void;
 }
 
-export const Login = ({ onSubmit }: LoginProps) => {
+export const Login = ({ onSubmit, isAddingAccount, onBack }: LoginProps) => {
   const [username, setUsername] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -100,6 +124,13 @@ export const Login = ({ onSubmit }: LoginProps) => {
 
   return (
     <Container>
+      {isAddingAccount && onBack && (
+        <BackButton onClick={onBack}>
+          <MdArrowBack size={20} />
+          Back to Dashboard
+        </BackButton>
+      )}
+      
       <Message>Login to manage your <DuckText>@duck.com</DuckText> addresses</Message>
       <InputWrapper>
         <Input
@@ -116,6 +147,10 @@ export const Login = ({ onSubmit }: LoginProps) => {
         {loading ? 'Sending...' : 'Continue'}
       </Button>
       {error && <ErrorMessage>{error}</ErrorMessage>}
+      
+      <VersionInfo>
+        Qwacky v1.1.0
+      </VersionInfo>
     </Container>
   )
-} 
+}

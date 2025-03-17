@@ -30,14 +30,6 @@ That's why I created Qwacky - initially for personal use, but I realized others 
 ![](https://raw.githubusercontent.com/Lanshuns/Qwacky/refs/heads/main/images/banner2.png)
 > **A big thanks to [@m.miriam12398](https://www.instagram.com/m.miriam12398/) for contributing by making such a cool designs for the project!**
 
-## Planned Features
-
-- [ ] Autofill input icon
-- [ ] Multiple accounts support
-- [ ] Create duck account
-- [ ] Change forwarding email
-- [ ] Delete duck account
-
 # Security & Privacy
 - Uses minimal permissions required for functionality
 - Only accesses tabs when explicitly requested by user action

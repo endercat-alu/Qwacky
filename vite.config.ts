@@ -9,12 +9,11 @@ const copyManifest = () => {
     writeBundle: () => {
       mkdirSync('dist', { recursive: true })
       mkdirSync('dist/icons', { recursive: true })
-      
-      // Copy the appropriate manifest file based on the build target
+
       const manifestFile = process.env.BROWSER === 'firefox' ? 'manifest.firefox.json' : 'manifest.chrome.json'
+
       copyFileSync(manifestFile, 'dist/manifest.json')
-      
-      // Copy all icon sizes
+
       const iconSizes = ['16', '48', '128']
       iconSizes.forEach(size => {
         copyFileSync(
@@ -22,14 +21,14 @@ const copyManifest = () => {
           `dist/icons/qwacky-${size}.png`
         )
       })
-      
-      // Copy the default icon
+
       copyFileSync('src/icons/qwacky.png', 'dist/icons/qwacky.png')
       
-      // Only copy polyfill for Firefox
       if (process.env.BROWSER === 'firefox') {
         copyFileSync('node_modules/webextension-polyfill/dist/browser-polyfill.js', 'dist/browser-polyfill.js')
       }
+
+      copyFileSync('CHANGELOG.md', 'dist/CHANGELOG.md')
     }
   }
 }

@@ -1,10 +1,8 @@
 const setupConnection = () => {
   try {
-    // Test connection
     chrome.runtime.connect();
     return true;
   } catch {
-    // If connection fails, reload the content script
     window.location.reload();
     return false;
   }
@@ -37,18 +35,14 @@ const fillInput = (element: HTMLElement | null, value: string) => {
   const fullAddress = `${value}@duck.com`
 
   try {
-    // For contentEditable elements
     if (element.isContentEditable) {
       element.textContent = fullAddress
       return true
     }
 
-    // For input elements
     if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
-      // Try direct assignment
       element.value = fullAddress
 
-      // Dispatch events to trigger any listeners
       element.dispatchEvent(new Event('input', { bubbles: true }))
       element.dispatchEvent(new Event('change', { bubbles: true }))
       
@@ -68,8 +62,7 @@ chrome.runtime.onMessage.addListener((message, _sender) => {
   if (message.type === 'fill-address') {
     const activeElement = document.activeElement
     const filled = fillInput(activeElement as HTMLElement, message.address)
-    
-    // Copy to clipboard regardless of fill success
+
     navigator.clipboard.writeText(`${message.address}@duck.com`)
     
     if (!filled) {

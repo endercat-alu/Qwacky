@@ -1,10 +1,11 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { DuckService } from '../services/DuckService'
 import { useApp } from '../context/AppContext'
+import { MdArrowBack } from 'react-icons/md'
 
 const Container = styled.div`
-  padding: 24px;
+  padding: 16px 20px;
   text-align: center;
 `
 
@@ -59,9 +60,19 @@ const Button = styled.button`
 const BackButton = styled.button`
   background: none;
   border: none;
-  color: ${props => props.theme.text};
-  text-decoration: underline;
+  color: ${props => props.theme.primary};
   cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+  margin-bottom: 16px;
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `
 
 const ErrorMessage = styled.p`
@@ -73,28 +84,73 @@ const ErrorMessage = styled.p`
 interface OTPProps {
   username: string;
   onBack: () => void;
+  isAddingAccount?: boolean;
+  onSuccess?: () => void;
 }
 
-export const OTP = ({ username, onBack }: OTPProps) => {
+export const OTP = ({ username, onBack, isAddingAccount, onSuccess }: OTPProps) => {
   const [otp, setOtp] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const { setUserData } = useApp()
+  const { setUserData, switchAccount } = useApp()
   const duckService = new DuckService()
 
+  useEffect(() => {
+    chrome.storage.local.set({ 
+      loginState: 'otp',
+      tempUsername: username
+    });
+    
+    return () => {
+      chrome.storage.local.remove(['otp_verification_in_progress']);
+    };
+  }, [username]);
+
   const handleVerify = async () => {
-    setError('')
-    setLoading(true)
+    setLoading(true);
+    setError('');
     
-    const response = await duckService.verifyOTP(username, otp)
+    await chrome.storage.local.set({ otp_verification_in_progress: true });
     
-    setLoading(false)
-    if (response.status === 'success' && response.dashboard) {
-      setUserData(response.dashboard)
-    } else {
-      setError(response.message)
+    try {
+      const response = await duckService.verifyOTP(username, otp);
+      
+      if (response.status === 'success') {
+        if (isAddingAccount) {
+          if (response.dashboard) {
+            try {
+              if (onSuccess) {
+                onSuccess();
+              }
+              await switchAccount(username);
+              await chrome.storage.local.remove(['otp_verification_in_progress']);
+            } catch (error) {
+              console.error('Error switching account:', error);
+              setError('Failed to switch to new account');
+              await chrome.storage.local.remove(['otp_verification_in_progress']);
+            }
+          } else {
+            setError('Failed to get user data');
+            await chrome.storage.local.remove(['otp_verification_in_progress']);
+          }
+        } else if (response.dashboard) {
+          setUserData(response.dashboard);
+          await chrome.storage.local.remove(['otp_verification_in_progress']);
+          if (onSuccess) {
+            onSuccess();
+          }
+        }
+      } else {
+        setError(response.message || 'Failed to verify OTP');
+        await chrome.storage.local.remove(['otp_verification_in_progress']);
+      }
+    } catch (error) {
+      setError('An error occurred. Please try again.');
+      await chrome.storage.local.remove(['otp_verification_in_progress']);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && otp.split(' ').filter(Boolean).length === 4 && !loading) {
@@ -104,6 +160,11 @@ export const OTP = ({ username, onBack }: OTPProps) => {
 
   return (
     <Container>
+      <BackButton onClick={onBack}>
+        <MdArrowBack size={20} />
+        {isAddingAccount ? 'Back to login' : 'Back'}
+      </BackButton>
+      
       <Username>Logged in as {username}@duck.com</Username>
       <Message>One-time passphrase sent to your email</Message>
       <Input
@@ -123,9 +184,6 @@ export const OTP = ({ username, onBack }: OTPProps) => {
       >
         {loading ? 'Verifying...' : 'Verify OTP'}
       </Button>
-      <BackButton onClick={onBack} disabled={loading}>
-        Login using another username
-      </BackButton>
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </Container>
   )
