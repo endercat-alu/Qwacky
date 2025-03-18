@@ -6,7 +6,7 @@
 - Added notes for each generated address
 - Added saves website domain in notes on generate address from context menu 
 - Added delete address function
-- Added export/import (csv & json) settings to backup the generated address with n if have
+- Added export/import (csv & json) settings to backup the generated address
 - Added confirmation before logout and delete address
 - Added build number management and generate random id for Firefox
 - Added Changelog popup and in the menu
