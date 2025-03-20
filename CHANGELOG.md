@@ -8,7 +8,7 @@
 - Added delete address function
 - Added export/import (csv & json) settings to backup the generated address
 - Added confirmation before logout and delete address
-- Added build number management and generate random id for Firefox
+- Added build number management
 - Added Changelog popup and in the menu
 - Bug fixes & code improvements
 
