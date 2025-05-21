@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 import { DuckService } from '../services/DuckService'
 import { UserData } from '../types'
 
-type ThemeMode = 'light' | 'dark' | 'system';
+export type ThemeMode = 'light' | 'dark' | 'system';
 
 interface Account {
   userData: UserData;
@@ -114,19 +114,37 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         await chrome.storage.local.set({ 
           currentAccount: newCurrentAccount.username,
           user_data: newCurrentAccount.userData,
-          access_token: newCurrentAccount.userData.user.access_token
+          access_token: newCurrentAccount.userData.user.access_token,
+          loginState: 'login'
         })
         setCurrentAccount(newCurrentAccount.username)
         setUserData(newCurrentAccount.userData)
         setAccounts(updatedAccounts)
       } else {
-        await chrome.storage.local.remove(['currentAccount', 'user_data', 'access_token'])
+        await chrome.storage.local.remove([
+          'currentAccount', 
+          'user_data', 
+          'access_token',
+          'otp_verification_in_progress',
+          'addingAccount',
+          'tempUsername'
+        ])
+        await chrome.storage.local.set({ loginState: 'login' })
         setCurrentAccount(null)
         setUserData(null)
         setAccounts([])
       }
     } else {
       await duckService.logout()
+      await chrome.storage.local.remove([
+        'currentAccount', 
+        'user_data', 
+        'access_token',
+        'otp_verification_in_progress',
+        'addingAccount',
+        'tempUsername'
+      ])
+      await chrome.storage.local.set({ loginState: 'login' })
       setUserData(null)
     }
   }

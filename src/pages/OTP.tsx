@@ -109,9 +109,8 @@ export const OTP = ({ username, onBack, isAddingAccount, onSuccess }: OTPProps) 
   const handleVerify = async () => {
     setLoading(true);
     setError('');
-    
+
     await chrome.storage.local.set({ otp_verification_in_progress: true });
-    
     try {
       const response = await duckService.verifyOTP(username, otp);
       
@@ -158,6 +157,18 @@ export const OTP = ({ username, onBack, isAddingAccount, onSuccess }: OTPProps) 
     }
   }
 
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pastedText = e.clipboardData.getData('text');
+
+    const words = pastedText.split(/\s+/).filter(Boolean);
+    const formattedText = words.length >= 4 
+      ? words.slice(0, 4).join(' ') 
+      : words.join(' ');
+    
+    setOtp(formattedText.toLowerCase());
+  }
+
   return (
     <Container>
       <BackButton onClick={onBack}>
@@ -173,6 +184,7 @@ export const OTP = ({ username, onBack, isAddingAccount, onSuccess }: OTPProps) 
         value={otp}
         onChange={(e) => setOtp(e.target.value.toLowerCase())}
         onKeyUp={handleKeyPress}
+        onPaste={handlePaste}
         disabled={loading}
         spellCheck={false}
         autoComplete="off"
@@ -187,4 +199,4 @@ export const OTP = ({ username, onBack, isAddingAccount, onSuccess }: OTPProps) 
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </Container>
   )
-} 
+}

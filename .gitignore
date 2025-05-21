@@ -40,3 +40,7 @@ yarn-error.log*
 # Ignore build artifacts
 dist/
 
+# Roo-Code Stuff
+memory-bank/
+.vscode
+.roomodes

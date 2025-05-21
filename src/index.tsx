@@ -2,6 +2,7 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { App } from './App'
 import { AppProvider } from './context/AppContext'
+import { PermissionProvider } from './context/PermissionContext'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from './theme'
 
@@ -20,37 +21,40 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: hidden;
   }
 
-  /* Custom Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #2D2D2D;
+    background: ${props => props.theme.surface};
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #3D3D3D;
+    background: ${props => props.theme.border};
     border-radius: 4px;
     
     &:hover {
-      background: rgba(222, 88, 51, 0.5);
+      background: ${props => `${props.theme.primary}80`};
     }
   }
 `
 
 const container = document.getElementById('root')
-const root = createRoot(container!)
+if (!container) {
+  throw new Error('Failed to find the root element')
+}
 
-root.render(
+createRoot(container).render(
   <React.StrictMode>
     <AppProvider>
-      <ThemeProvider theme={theme.dark}>
-        <GlobalStyle />
-        <App />
-      </ThemeProvider>
+      <PermissionProvider>
+        <ThemeProvider theme={theme.dark}>
+          <GlobalStyle />
+          <App />
+        </ThemeProvider>
+      </PermissionProvider>
     </AppProvider>
   </React.StrictMode>
-) 
+)

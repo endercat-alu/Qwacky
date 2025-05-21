@@ -153,6 +153,15 @@ export class DuckService {
     }
   }
 
+  async clearAllAddresses(): Promise<boolean> {
+    try {
+      return await this.storage.clearAllAddresses()
+    } catch (error: unknown) {
+      console.error('Error clearing all addresses:', error)
+      return false
+    }
+  }
+
   async exportAddresses(): Promise<string> {
     try {
       return await this.importExport.exportAddresses()

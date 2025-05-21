@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
-import { MdVisibility, MdVisibilityOff, MdEdit, MdCheck, MdClose, MdDelete } from "react-icons/md";
+import { MdVisibility, MdVisibilityOff, MdEdit, MdCheck, MdClose, MdDelete, MdDeleteSweep } from "react-icons/md";
+import { ConfirmDialog } from './ConfirmDialog';
 
 const Section = styled.div`
   margin-bottom: 32px;
@@ -16,6 +17,11 @@ const SectionHeader = styled.div`
     font-size: 18px;
     margin: 0;
   }
+`;
+
+const HeaderActions = styled.div`
+  display: flex;
+  gap: 8px;
 `;
 
 const AddressList = styled.div<{ hidden?: boolean }>`
@@ -51,6 +57,14 @@ const IconButton = styled.button`
   }
   
   &.delete {
+    color: #e53935;
+    
+    &:hover {
+      color: #c62828;
+    }
+  }
+
+  &.clear {
     color: #e53935;
     
     &:hover {
@@ -148,6 +162,7 @@ interface AddressListSectionProps {
   formatTime: (timestamp: number) => string;
   onUpdateNotes: (addressValue: string, notes: string) => Promise<void>;
   onDeleteAddress: (addressValue: string) => Promise<void>;
+  onClearAllAddresses: () => Promise<void>;
 }
 
 export const AddressListSection: React.FC<AddressListSectionProps> = ({
@@ -155,10 +170,13 @@ export const AddressListSection: React.FC<AddressListSectionProps> = ({
   copyToClipboard,
   formatTime,
   onUpdateNotes,
-  onDeleteAddress
+  onDeleteAddress,
+  onClearAllAddresses
 }) => {
   const [hideAddresses, setHideAddresses] = useState(false);
   const [editing, setEditing] = useState<EditingState | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   const handleEditNotes = useCallback((address: StoredAddress) => {
     setEditing({
@@ -178,11 +196,21 @@ export const AddressListSection: React.FC<AddressListSectionProps> = ({
     setEditing(null);
   }, []);
 
-  const handleDeleteAddress = useCallback(async (addressValue: string) => {
-    if (confirm("Are you sure you want to delete this address?")) {
-      await onDeleteAddress(addressValue);
+  const handleDeleteClick = useCallback((addressValue: string) => {
+    setDeleteConfirm(addressValue);
+  }, []);
+
+  const handleDeleteConfirm = useCallback(async () => {
+    if (deleteConfirm) {
+      await onDeleteAddress(deleteConfirm);
+      setDeleteConfirm(null);
     }
-  }, [onDeleteAddress]);
+  }, [deleteConfirm, onDeleteAddress]);
+
+  const handleClearConfirm = useCallback(async () => {
+    await onClearAllAddresses();
+    setShowClearConfirm(false);
+  }, [onClearAllAddresses]);
 
   const toggleHideAddresses = useCallback(() => {
     setHideAddresses(prev => !prev);
@@ -261,7 +289,7 @@ export const AddressListSection: React.FC<AddressListSectionProps> = ({
                   </IconButton>
                   <IconButton 
                     className="delete" 
-                    onClick={() => handleDeleteAddress(address.value)}
+                    onClick={() => handleDeleteClick(address.value)}
                     aria-label="Delete address"
                   >
                     <MdDelete size={18} />
@@ -273,24 +301,57 @@ export const AddressListSection: React.FC<AddressListSectionProps> = ({
         ))}
       </AddressList>
     );
-  }, [addresses, hideAddresses, editing, copyToClipboard, formatTime, handleEditNotes, handleSaveNotes, handleCancelEdit, handleDeleteAddress]);
+  }, [addresses, hideAddresses, editing, copyToClipboard, formatTime, handleEditNotes, handleSaveNotes, handleCancelEdit, handleDeleteClick]);
 
   return (
-    <Section>
-      <SectionHeader>
-        <h2 id="addresses-heading">Generated Addresses</h2>
-        <IconButton 
-          onClick={toggleHideAddresses}
-          aria-label={hideAddresses ? "Show addresses" : "Hide addresses"}
-          aria-expanded={!hideAddresses}
-          aria-controls="addresses-list"
-        >
-          {hideAddresses ? <MdVisibility /> : <MdVisibilityOff />}
-        </IconButton>
-      </SectionHeader>
-      <div id="addresses-list" aria-labelledby="addresses-heading">
-        {addressList}
-      </div>
-    </Section>
+    <>
+      <Section>
+        <SectionHeader>
+          <h2 id="addresses-heading">Generated Addresses</h2>
+          <HeaderActions>
+            {addresses.length > 0 && (
+              <IconButton 
+                className="clear"
+                onClick={() => setShowClearConfirm(true)}
+                aria-label="Clear all addresses"
+              >
+                <MdDeleteSweep size={24} />
+              </IconButton>
+            )}
+            <IconButton 
+              onClick={toggleHideAddresses}
+              aria-label={hideAddresses ? "Show addresses" : "Hide addresses"}
+              aria-expanded={!hideAddresses}
+              aria-controls="addresses-list"
+            >
+              {hideAddresses ? <MdVisibility /> : <MdVisibilityOff />}
+            </IconButton>
+          </HeaderActions>
+        </SectionHeader>
+        <div id="addresses-list" aria-labelledby="addresses-heading">
+          {addressList}
+        </div>
+      </Section>
+
+      <ConfirmDialog
+        isOpen={deleteConfirm !== null}
+        title="Delete Address"
+        message={`Are you sure you want to delete this address\n(${deleteConfirm}@duck.com)?`}
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteConfirm(null)}
+      />
+
+      <ConfirmDialog
+        isOpen={showClearConfirm}
+        title="Clear All Addresses"
+        message={"Are you sure you want to clear all addresses?\n\nThis action cannot be undone."}
+        confirmLabel="Clear All"
+        cancelLabel="Cancel"
+        onConfirm={handleClearConfirm}
+        onCancel={() => setShowClearConfirm(false)}
+      />
+    </>
   );
-}; 
+};

@@ -1,14 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
-import { copyFileSync, mkdirSync } from 'fs'
+import { copyFileSync, mkdirSync, existsSync } from 'fs'
 
 const copyManifest = () => {
   return {
     name: 'copy-manifest',
     writeBundle: () => {
       mkdirSync('dist', { recursive: true })
-      mkdirSync('dist/icons', { recursive: true })
+      mkdirSync('dist/assets/icons', { recursive: true })
 
       const manifestFile = process.env.BROWSER === 'firefox' ? 'manifest.firefox.json' : 'manifest.chrome.json'
 
@@ -17,15 +17,16 @@ const copyManifest = () => {
       const iconSizes = ['16', '48', '128']
       iconSizes.forEach(size => {
         copyFileSync(
-          `src/icons/qwacky-${size}.png`, 
-          `dist/icons/qwacky-${size}.png`
+          `assets/icons/qwacky-${size}.png`, 
+          `dist/assets/icons/qwacky-${size}.png`
         )
       })
 
-      copyFileSync('src/icons/qwacky.png', 'dist/icons/qwacky.png')
-      
-      if (process.env.BROWSER === 'firefox') {
-        copyFileSync('node_modules/webextension-polyfill/dist/browser-polyfill.js', 'dist/browser-polyfill.js')
+      copyFileSync('assets/icons/qwacky.png', 'dist/assets/icons/qwacky.png')
+
+      const polyfillPath = 'node_modules/webextension-polyfill/dist/browser-polyfill.js';
+      if (existsSync(polyfillPath)) {
+        copyFileSync(polyfillPath, 'dist/browser-polyfill.js');
       }
 
       copyFileSync('CHANGELOG.md', 'dist/CHANGELOG.md')

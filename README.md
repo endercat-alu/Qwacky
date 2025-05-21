@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="src/icons/qwacky.png" alt="Qwacky Logo" width="128" height="128">
+  <img src="assets/icons/qwacky.png" alt="Qwacky Logo" width="128" height="128">
 </p>
 
 # Why Qwacky?
@@ -23,32 +23,13 @@ That's why I created Qwacky - initially for personal use, but I realized others 
 ## Features
 - Generate and manage private @duck.com email addresses
 - Copy the generated address to the clipboard
-- Auto-fill addresses in input fields from context menu for a quick address generation
-- Store the generated addresses
+- Auto-fill and copy addresses in input fields from context menu for a quick address generation
+- Store the generated addresses locally
+- Multiple accounts support
+- Notes for each generated address
+- Export/import settings (CSV & JSON)
 
-## Screenshots
-![](https://raw.githubusercontent.com/Lanshuns/Qwacky/refs/heads/main/images/banner2.png)
-> **A big thanks to [@m.miriam12398](https://www.instagram.com/m.miriam12398/) for contributing by making such a cool designs for the project!**
-
-# Security & Privacy
-- Uses minimal permissions required for functionality
-- Only accesses tabs when explicitly requested by user action
-- All data is stored locally on your device
-- No tracking or analytics
-- Open source for transparency
-
-## Permissions
-
-This extension requires the following permissions with detailed explanations of why each is needed:
-
-- `activeTab`: Required to access and inject scripts into the current tab only when you explicitly interact with the extension (e.g., using the context menu to fill email addresses)
-- `storage`: Required to store your generated addresses and settings locally
-- `contextMenus`: Enables the right-click menu for quick address generation
-- `clipboardWrite`: Needed to copy the generated address to the clipboard
-
-> **Security Note**: The extension only accesses web pages when you explicitly use the context menu to generate an address. No automatic or background access to web pages occurs.
-
-## Browser Compatibility
+### Browser Compatibility
 
 Qwacky is designed to work seamlessly on both Chrome and Firefox. The build process automatically handles browser-specific requirements:
 
@@ -57,6 +38,40 @@ Qwacky is designed to work seamlessly on both Chrome and Firefox. The build proc
 
 Both versions maintain feature parity while adhering to each browser's best practices and security models.
 
+## Screenshots
+![Qwacky Banner](assets/images/banner2.png)
+> **A big thanks to [@m.miriam12398](https://www.instagram.com/m.miriam12398/) for contributing by making such a cool designs for the project!**
+
+# Security & Privacy
+- Uses minimal permissions required for functionality
+- All data is stored locally on your device
+- No tracking or analytics
+- Manifest V3 for better security
+- Open source for transparency
+
+### Permissions
+- `Storage`: Required to store your generated addresses and settings locally
+- `Context Menu Autofill`: This toggle enables generating aliases from the context menu, auto-detecting email fields, It requires the following optional permissions:
+  - `contextMenus`: Enables the context menu for quick address generation
+  - `activeTab`: Required to access and inject scripts into the current tab only when you explicitly interact with the extension (e.g., using the context menu to fill email addresses)
+  - `clipboardWrite`: Needed to copy the generated address to the clipboard
+  - `scripting`: Required for programmatically injecting the content script when using the context menu
+
+### Browser-Specific Permission Handling and Limitations
+
+Firefox and Chrome differ in how they manage and display extension permissions like `contextMenus`:
+
+- **Firefox** requires `contextMenus` to be listed in the manifest's `permissions` block at install time. Unlike Chrome, Firefox **does not support** requesting `contextMenus` as an optional permission in Manifest V3. This is because the permission directly affects browser UI elements (like the right-click menu), and Firefox enforces that such changes be explicitly declared up front.
+- **Chrome**, on the other hand, allows `contextMenus` to be declared in `optional_permissions` and requested at runtime. However, even after removing permissions programmatically using `chrome.permissions.remove()`, they may still appear under `chrome://extensions` as "granted"—even if they're no longer active.
+
+To maintain compatibility and avoid unexpected behavior:
+- We include `contextMenus` in the required permissions for Firefox.
+- We still use runtime permission requests for Chrome where possible, in line with its model.
+
+This difference in behavior is a known limitation in Chrome and has been discussed by the Chromium team:
+- [Chromium Extensions Group – Optional Permission Removal Behavior](https://groups.google.com/a/chromium.org/g/chromium-extensions/c/tqbVLwgVh58)
+- [Chrome Developers Documentation – Optional Permissions](https://developer.chrome.com/docs/extensions/mv3/declare_permissions/#optional-permissions)
+- [Mozilla Discourse – `contextMenus` as an optional permission is not supported in Firefox](https://discourse.mozilla.org/t/contextmenus-as-an-optional-permission/64181)
 
 # Manual Installation
 
@@ -80,38 +95,29 @@ Both versions maintain feature parity while adhering to each browser's best prac
 - npm (v7 or higher)
 
 ### Setup
-1. Clone the repository
 ```bash
+# 1. Clone the repository
 git clone https://github.com/Lanshuns/Qwacky.git
 cd qwacky
-```
-
-2. Install dependencies
-```bash
+# 2. Install dependencies
 npm install
 ```
 
 ### Development Mode
 
-#### For Chrome:
 ```bash
+# For Chrome
 npm run dev
-```
-
-#### For Firefox:
-```bash
+# For Firefox
 npm run dev:firefox
 ```
 
 ### Production Build
 
-#### For Chrome:
 ```bash
+# For Chrome
 npm run build
-```
-
-#### For Firefox:
-```bash
+# For Firefox
 npm run build:firefox
 ```
 

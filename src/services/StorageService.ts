@@ -214,7 +214,35 @@ export class StorageService {
     }
   }
 
+  async clearAllAddresses(): Promise<boolean> {
+    try {
+      const username = await this.getCurrentUsername();
+      if (!username) {
+        return false;
+      }
+
+      const accountKey = `addresses_${username}`;
+      await chrome.storage.local.set({ [accountKey]: [] });
+
+      const globalResult = await chrome.storage.local.get('generated_addresses');
+      const globalAddresses = globalResult.generated_addresses || [];
+      
+      const filteredGlobalAddresses = globalAddresses.filter((addr: Address) => 
+        addr.username !== username
+      );
+      
+      await chrome.storage.local.set({ generated_addresses: filteredGlobalAddresses });
+
+      await this.updateAddressCount(0);
+      
+      return true;
+    } catch (error) {
+      console.error('Error clearing all addresses:', error);
+      return false;
+    }
+  }
+
   async clearStorage(): Promise<void> {
     await chrome.storage.local.clear();
   }
-} 
+}

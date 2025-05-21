@@ -9,7 +9,7 @@ import { Header } from './components/Header'
 import { theme } from './theme'
 import { useState, useEffect } from 'react'
 
-const APP_VERSION = '1.1.0'
+const APP_VERSION = '1.2.0'
 
 const Container = styled.div`
   width: 360px;
@@ -28,7 +28,13 @@ export const App = () => {
   const [addingAccount, setAddingAccount] = useState(false)
 
   useEffect(() => {
-    chrome.storage.local.get(['loginState', 'tempUsername', 'addingAccount', 'lastVersion'], (result) => {
+    chrome.storage.local.get([
+      'loginState',
+      'tempUsername',
+      'addingAccount',
+      'lastVersion',
+      'showSettings'
+    ], (result) => {
       if (result.loginState) {
         setCurrentPage(result.loginState)
       }
@@ -38,6 +44,9 @@ export const App = () => {
       if (result.addingAccount) {
         setAddingAccount(true)
       }
+      if (result.showSettings !== undefined) {
+        setShowSettings(result.showSettings)
+      }
       if (userData && result.lastVersion !== APP_VERSION) {
         setShowChangelog(true)
         chrome.storage.local.set({ lastVersion: APP_VERSION })
@@ -46,22 +55,31 @@ export const App = () => {
   }, [userData])
 
   useEffect(() => {
-    if (!userData && !addingAccount) {
+    if (!userData) {
       setCurrentPage('login')
       setTempUsername('')
       setShowSettings(false)
-      chrome.storage.local.remove(['loginState', 'tempUsername'])
+      setShowChangelog(false)
+      setAddingAccount(false)
+      chrome.storage.local.remove([
+        'loginState',
+        'tempUsername',
+        'addingAccount',
+        'otp_verification_in_progress'
+      ])
     }
-  }, [userData, addingAccount])
+  }, [userData])
 
   const updateLoginState = (page: string, username?: string) => {
+    const storageData: { loginState: string; tempUsername?: string } = { loginState: page }
     setCurrentPage(page)
-    chrome.storage.local.set({ loginState: page })
     
     if (username) {
       setTempUsername(username)
-      chrome.storage.local.set({ tempUsername: username })
+      storageData.tempUsername = username
     }
+    
+    chrome.storage.local.set(storageData)
   }
 
   const resetLoginState = () => {
@@ -71,41 +89,96 @@ export const App = () => {
   }
 
   const toggleSettings = () => {
-    setShowSettings(!showSettings)
-    if (!showSettings) {
+    const newShowSettings = !showSettings
+    setShowSettings(newShowSettings)
+    chrome.storage.local.set({ showSettings: newShowSettings })
+    if (newShowSettings) {
       setShowChangelog(false)
     }
   }
   
   const toggleChangelog = () => {
-    setShowChangelog(!showChangelog)
-    if (!showChangelog) {
+    const newShowChangelog = !showChangelog
+    setShowChangelog(newShowChangelog)
+    if (newShowChangelog) {
       setShowSettings(false)
+      chrome.storage.local.set({ showSettings: false })
     }
   }
   
   const handleAddAccount = () => {
     setAddingAccount(true)
     setCurrentPage('login')
-    chrome.storage.local.set({ 
-      addingAccount: true,
-      loginState: 'login'
-    })
+    setShowSettings(false)
+    setShowChangelog(false)
+    chrome.storage.local.set({ showSettings: false, addingAccount: true, loginState: 'login' })
   }
   
   const handleCancelAddAccount = () => {
-    setAddingAccount(false);
-    setCurrentPage('login');
-    setTempUsername('');
-
+    setAddingAccount(false)
+    setCurrentPage('login')
+    setTempUsername('')
     chrome.storage.local.remove([
       'addingAccount', 
       'loginState', 
-      'tempUsername',
-      'otp_verification_in_progress'
-    ]);
+      'tempUsername', 
+      'otp_verification_in_progress',
+      'showSettings'
+    ])
   }
   
+  const renderCurrentPage = () => {
+    if (!userData || addingAccount) {
+      if (currentPage === 'login') {
+        return (
+          <Login
+            onSubmit={(username) => {
+              updateLoginState('otp', username)
+              setShowSettings(false)
+              setShowChangelog(false)
+              chrome.storage.local.set({ showSettings: false })
+            }}
+            isAddingAccount={addingAccount}
+            onBack={addingAccount ? handleCancelAddAccount : undefined}
+          />
+        )
+      }
+      if (currentPage === 'otp') {
+        return (
+          <OTP
+            username={tempUsername}
+            onBack={() => {
+              resetLoginState()
+              if (addingAccount && userData) {
+                handleCancelAddAccount()
+              }
+              setShowSettings(false)
+              setShowChangelog(false)
+              chrome.storage.local.set({ showSettings: false })
+            }}
+            isAddingAccount={addingAccount}
+            onSuccess={() => {
+              if (addingAccount) {
+                handleCancelAddAccount()
+              }
+              setShowSettings(false)
+              setShowChangelog(false)
+              chrome.storage.local.set({ showSettings: false })
+            }}
+          />
+        )
+      }
+    }
+
+    if (userData && !addingAccount) {
+      if (showSettings) return <Settings onBack={toggleSettings} />
+      if (showChangelog) return <Changelog onBack={toggleChangelog} />
+      return <Dashboard />
+    }
+
+    return null
+  }
+
   return (
     <ThemeProvider theme={darkMode ? theme.dark : theme.light}>
       <Container>
@@ -114,38 +187,7 @@ export const App = () => {
           onAddAccountClick={handleAddAccount}
           onChangelogClick={toggleChangelog}
         />
-        
-        {(!userData || addingAccount) && currentPage === 'login' && (
-          <Login 
-            onSubmit={(username) => {
-              updateLoginState('otp', username)
-            }}
-            isAddingAccount={addingAccount}
-            onBack={addingAccount ? handleCancelAddAccount : undefined}
-          />
-        )}
-        
-        {(!userData || addingAccount) && currentPage === 'otp' && (
-          <OTP
-            username={tempUsername}
-            onBack={() => {
-              resetLoginState()
-              if (addingAccount && userData) {
-                handleCancelAddAccount()
-              }
-            }}
-            isAddingAccount={addingAccount}
-            onSuccess={() => {
-              if (addingAccount) {
-                handleCancelAddAccount()
-              }
-            }}
-          />
-        )}
-        
-        {userData && !addingAccount && !showSettings && !showChangelog && <Dashboard />}
-        {userData && !addingAccount && showSettings && <Settings onBack={() => setShowSettings(false)} />}
-        {userData && !addingAccount && showChangelog && <Changelog onBack={() => setShowChangelog(false)} />}
+        {renderCurrentPage()}
       </Container>
     </ThemeProvider>
   )

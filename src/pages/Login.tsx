@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import { DuckService } from '../services/DuckService'
 import { MdArrowBack } from 'react-icons/md'
+import { useApp } from '../context/AppContext'
 
 const Container = styled.div`
   padding: 24px;
@@ -27,11 +28,16 @@ const InputWrapper = styled.div`
 const Input = styled.input`
   width: 100%;
   padding: 12px;
-  padding-right: 90px;  // Make room for the suffix
+  padding-right: 90px;
   border: 1px solid ${props => props.theme.border};
   border-radius: 8px;
   background: ${props => props.theme.surface};
   color: ${props => props.theme.text};
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.theme.primary};
+  }
 `
 
 const Suffix = styled.span`
@@ -73,20 +79,20 @@ const BackButton = styled.button`
   border: none;
   color: ${props => props.theme.primary};
   cursor: pointer;
-  padding: 0;
   display: flex;
   align-items: center;
   gap: 4px;
   font-size: 16px;
   margin-bottom: 16px;
   align-self: flex-start;
+  padding: 0;
 `;
 
 const VersionInfo = styled.div`
   margin-top: 32px;
   text-align: center;
   font-size: 14px;
-  color: ${(props) => props.theme.textSecondary};
+  color: ${props => props.theme.textSecondary};
 `;
 
 interface LoginProps {
@@ -100,12 +106,36 @@ export const Login = ({ onSubmit, isAddingAccount, onBack }: LoginProps) => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const duckService = new DuckService()
+  const { accounts } = useApp()
+
+  const sanitizeUsername = (input: string) => {
+    return input.replace(/[^a-zA-Z0-9-_]/g, '');
+  }
+
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const sanitized = sanitizeUsername(e.target.value);
+    setUsername(sanitized);
+  }
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pastedText = e.clipboardData.getData('text');
+    const sanitized = sanitizeUsername(pastedText);
+    setUsername(sanitized);
+  }
 
   const handleSubmit = async () => {
     setError('')
     setLoading(true)
     
     const cleanUsername = username.replace(/@duck\.com$/, '')
+    
+    if (accounts.some(acc => acc.username === cleanUsername)) {
+      setLoading(false)
+      setError('This account is already logged in')
+      return
+    }
+    
     const response = await duckService.login(cleanUsername)
     
     setLoading(false)
@@ -130,16 +160,18 @@ export const Login = ({ onSubmit, isAddingAccount, onBack }: LoginProps) => {
           Back to Dashboard
         </BackButton>
       )}
-      
       <Message>Login to manage your <DuckText>@duck.com</DuckText> addresses</Message>
       <InputWrapper>
         <Input
           type="text"
           placeholder="Enter duck username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={handleUsernameChange}
           onKeyUp={handleKeyPress}
+          onPaste={handlePaste}
           disabled={loading}
+          autoComplete="off"
+          spellCheck={false}
         />
         <Suffix>@duck.com</Suffix>
       </InputWrapper>
@@ -147,9 +179,8 @@ export const Login = ({ onSubmit, isAddingAccount, onBack }: LoginProps) => {
         {loading ? 'Sending...' : 'Continue'}
       </Button>
       {error && <ErrorMessage>{error}</ErrorMessage>}
-      
       <VersionInfo>
-        Qwacky v1.1.0
+        Qwacky v1.2.0
       </VersionInfo>
     </Container>
   )

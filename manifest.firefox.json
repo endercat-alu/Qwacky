@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Qwacky",
-  "version": "1.1.0",
-  "description": "Qwacky is an open source client for DuckDuckGo Email Protection, To manage and generate @duck.com aliases. ",
+  "version": "1.2.0",
+  "description": "Qwacky is an open source client for DuckDuckGo Email Protection, To manage and generate @duck.com aliases.",
   "browser_specific_settings": {
     "gecko": {
       "id": "qwacky@local-v1.0.1",
@@ -10,19 +10,22 @@
     }
   },
   "icons": {
-    "16": "icons/qwacky-16.png",
-    "48": "icons/qwacky-48.png",
-    "128": "icons/qwacky-128.png"
+    "16": "assets/icons/qwacky-16.png",
+    "48": "assets/icons/qwacky-48.png",
+    "128": "assets/icons/qwacky-128.png"
   },
   "action": {
     "default_popup": "index.html",
-    "default_icon": "icons/qwacky.png"
+    "default_icon": "assets/icons/qwacky.png"
   },
   "permissions": [
     "storage",
-    "contextMenus",
+    "contextMenus"
+  ],
+  "optional_permissions": [
     "clipboardWrite",
-    "activeTab"
+    "activeTab",
+    "scripting"
   ],
   "background": {
     "scripts": [
@@ -31,29 +34,10 @@
     ],
     "type": "module"
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "http://*/*",
-        "https://*/*"
-      ],
-      "js": [
-        "browser-polyfill.js",
-        "contentScript.js"
-      ]
-    }
-  ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'"
+    "extension_pages": "script-src 'self'; object-src 'none'"
   },
-  "web_accessible_resources": [
-    {
-      "resources": [
-        "icons/*"
-      ],
-      "matches": [
-        "*://*/*"
-      ]
-    }
+  "host_permissions": [
+    "https://quack.duckduckgo.com/*"
   ]
 }

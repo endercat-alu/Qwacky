@@ -146,6 +146,23 @@ export const Dashboard = () => {
     }
   };
 
+  const handleClearAllAddresses = async () => {
+    try {
+      const success = await duckService.clearAllAddresses();
+      
+      if (success) {
+        setAddresses([]);
+        setAddressesCount(0);
+        showNotification("All addresses cleared successfully");
+      } else {
+        showNotification("Failed to clear addresses");
+      }
+    } catch (error) {
+      console.error("Error clearing addresses:", error);
+      showNotification("An error occurred while clearing addresses");
+    }
+  };
+
   if (!userData) return null;
 
   return (
@@ -155,19 +172,17 @@ export const Dashboard = () => {
         addressesCount={addressesCount}
         copyToClipboard={copyToClipboard}
       />
-
       <Button onClick={generateNewAddress} disabled={loading}>
         {loading ? "Generating..." : "Generate New Address"}
       </Button>
-
       <AddressListSection 
         addresses={addresses}
         copyToClipboard={copyToClipboard}
         formatTime={formatTime}
         onUpdateNotes={handleUpdateNotes}
         onDeleteAddress={handleDeleteAddress}
+        onClearAllAddresses={handleClearAllAddresses}
       />
-      
       <NotificationRenderer />
     </Container>
   );
