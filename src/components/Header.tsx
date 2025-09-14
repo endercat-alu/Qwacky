@@ -156,7 +156,7 @@ export const Header = ({ onSettingsClick, onAddAccountClick, onChangelogClick }:
   const menuDropdownRef = useRef<HTMLDivElement>(null)
   const { t } = useI18n()
   
-  const openGitHub = () => window.open('https://github.com/Lanshuns/Qwacky', '_blank')
+  const openGitHub = () => window.open('https://github.com/endercat-alu/Qwacky', '_blank')
   const openStore = () => window.open('https://chromewebstore.google.com/detail/qwacky/kieehbhdbincplacegpjdkoglfakboeo', '_blank')
   
   const handleLogoutClick = () => {

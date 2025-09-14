@@ -2,137 +2,142 @@
   <img src="assets/icons/qwacky.png" alt="Qwacky Logo" width="128" height="128">
 </p>
 
-# Why Qwacky?
+# 为什么选择 Qwacky？
 
-I've been using [DuckDuckGo Email Protection](https://duckduckgo.com/email) service for a while and really appreciate it. However, the requirement to install the full DuckDuckGo extension came with some challenges:
+我使用 [DuckDuckGo 邮件保护](https://duckduckgo.com/email) 服务已经有一段时间了，并且非常欣赏它。然而，安装完整的 DuckDuckGo 扩展程序带来了一些挑战：
 
-- You can't disable the tracking protection feature globally
-- You need to manually disable tracking protection for each website
-- The extension changes your default search engine to DuckDuckGo
-- No way to use just the email protection service standalone
+- 您无法全局禁用跟踪保护功能
+- 您需要为每个网站手动禁用跟踪保护
+- 该扩展程序会将您的默认搜索引擎更改为 DuckDuckGo
+- 无法单独使用邮件保护服务
 
-That's why I created Qwacky - initially for personal use, but I realized others might face the same issues. As someone who always wanted to contribute to the open-source community with helpful tools, I decided to share this project publicly.
+这就是我创建 Qwacky 的原因 - 最初是为了个人使用，但我意识到其他人可能面临同样的问题。作为一个一直想通过有用的工具为开源社区做出贡献的人，我决定公开分享这个项目。
 
-## Download
+## 下载
 
 <p align="center">
-<a href="https://chromewebstore.google.com/detail/qwacky/kieehbhdbincplacegpjdkoglfakboeo"><img src="https://user-images.githubusercontent.com/585534/107280622-91a8ea80-6a26-11eb-8d07-77c548b28665.png" alt="Get Qwacky for Chrome"></a>
-<a href="https://addons.mozilla.org/en-US/firefox/addon/qwacky/"><img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="Get Qwacky for Firefox"></a>
+<a href="https://chromewebstore.google.com/detail/qwacky/kieehbhdbincplacegpjdkoglfakboeo"><img src="https://user-images.githubusercontent.com/585534/107280622-91a8ea80-6a26-11eb-8d07-77c548b28665.png" alt="获取 Chrome 版 Qwacky"></a>
+<a href="https://addons.mozilla.org/en-US/firefox/addon/qwacky/"><img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="获取 Firefox 版 Qwacky"></a>
 </p>
 
-## Features
-- Generate and manage private @duck.com email addresses
-- Copy the generated address to the clipboard
-- Auto-fill and copy addresses in input fields from context menu for a quick address generation
-- Store the generated addresses locally
-- Multiple accounts support
-- Notes for each generated address
-- Export/import settings (CSV & JSON)
+## 功能特性
+- 生成和管理私有的 @duck.com 邮件地址
+- 将生成的地址复制到剪贴板
+- 从上下文菜单自动填充和复制输入框中的地址，快速生成地址
+- 在本地存储生成的地址
+- 支持多个账户
+- 为每个生成的地址添加备注
+- 导出/导入设置（CSV 和 JSON）
 
-### Browser Compatibility
+### 浏览器兼容性
 
-Qwacky is designed to work seamlessly on both Chrome and Firefox. The build process automatically handles browser-specific requirements:
+Qwacky 旨在与 Chrome 和 Firefox 无缝协作。构建过程会自动处理特定于浏览器的要求：
 
-- **Chrome**: Uses service workers for background scripts (Manifest V3)
-- **Firefox**: Uses background scripts with polyfill support (Manifest V3)
+- **Chrome**：使用服务工作线程作为后台脚本（Manifest V3）
+- **Firefox**：使用带有 polyfill 支持的后台脚本（Manifest V3）
 
-Both versions maintain feature parity while adhering to each browser's best practices and security models.
+两个版本在保持功能对等的同时，都遵循各自浏览器的最佳实践和安全模型。
 
-## Screenshots
-![Qwacky Banner](assets/images/banner2.png)
-> **A big thanks to [@m.miriam12398](https://www.instagram.com/m.miriam12398/) for contributing by making such a cool designs for the project!**
+## 截图
+![Qwacky 横幅](assets/images/banner2.png)
+> **非常感谢 [@m.miriam12398](https://www.instagram.com/m.miriam12398/) 为项目贡献了如此酷炫的设计！**
 
-# Security & Privacy
-- Uses minimal permissions required for functionality
-- All data is stored locally on your device
-- No tracking or analytics
-- Manifest V3 for better security
-- Open source for transparency
+# 安全与隐私
+- 使用功能所需的最小权限
+- 所有数据都存储在您的本地设备上
+- 无跟踪或分析
+- Manifest V3 提供更好的安全性
+- 开源以确保透明度
 
-### Permissions
-- `Storage`: Required to store your generated addresses and settings locally
-- `Context Menu Autofill`: This toggle enables generating aliases from the context menu, auto-detecting email fields, It requires the following optional permissions:
-  - `contextMenus`: Enables the context menu for quick address generation
-  - `activeTab`: Required to access and inject scripts into the current tab only when you explicitly interact with the extension (e.g., using the context menu to fill email addresses)
-  - `clipboardWrite`: Needed to copy the generated address to the clipboard
-  - `scripting`: Required for programmatically injecting the content script when using the context menu
+### 权限
+- `Storage`：需要在本地存储您生成的地址和设置
+- `上下文菜单自动填充`：此开关启用从上下文菜单生成别名，自动检测电子邮件字段，它需要以下可选权限：
+  - `contextMenus`：启用上下文菜单以快速生成地址
+  - `activeTab`：仅在您明确与扩展程序交互时（例如，使用上下文菜单填充电子邮件地址）才需要访问和向当前选项卡注入脚本
+  - `clipboardWrite`：需要将生成的地址复制到剪贴板
+  - `scripting`：在使用上下文菜单时以编程方式注入内容脚本所必需的
 
-### Browser-Specific Permission Handling and Limitations
+### 特定于浏览器的权限处理和限制
 
-Firefox and Chrome differ in how they manage and display extension permissions like `contextMenus`:
+Firefox 和 Chrome 在管理和显示扩展权限（如 `contextMenus`）方面有所不同：
 
-- **Firefox** requires `contextMenus` to be listed in the manifest's `permissions` block at install time. Unlike Chrome, Firefox **does not support** requesting `contextMenus` as an optional permission in Manifest V3. This is because the permission directly affects browser UI elements (like the right-click menu), and Firefox enforces that such changes be explicitly declared up front.
-- **Chrome**, on the other hand, allows `contextMenus` to be declared in `optional_permissions` and requested at runtime. However, even after removing permissions programmatically using `chrome.permissions.remove()`, they may still appear under `chrome://extensions` as "granted"—even if they're no longer active.
+- **Firefox** 要求在安装时将 `contextMenus` 列入清单的 `permissions` 块中。与 Chrome 不同，Firefox **不支持**在 Manifest V3 中将 `contextMenus` 作为可选权限请求。这是因为该权限直接影响浏览器 UI 元素（如右键菜单），Firefox 强制要求此类更改必须预先明确声明。
+- **Chrome** 另一方面，允许 `contextMenus` 在 `optional_permissions` 中声明并在运行时请求。然而，即使在使用 `chrome.permissions.remove()` 以编程方式移除权限后，它们在 `chrome://extensions` 下可能仍显示为"已授予"——即使它们不再处于活动状态。
 
-To maintain compatibility and avoid unexpected behavior:
-- We include `contextMenus` in the required permissions for Firefox.
-- We still use runtime permission requests for Chrome where possible, in line with its model.
+为了保持兼容性并避免意外行为：
+- 我们将 `contextMenus` 包含在 Firefox 的必需权限中。
+- 我们尽可能在 Chrome 中使用运行时权限请求，以符合其模型。
 
-This difference in behavior is a known limitation in Chrome and has been discussed by the Chromium team:
-- [Chromium Extensions Group – Optional Permission Removal Behavior](https://groups.google.com/a/chromium.org/g/chromium-extensions/c/tqbVLwgVh58)
-- [Chrome Developers Documentation – Optional Permissions](https://developer.chrome.com/docs/extensions/mv3/declare_permissions/#optional-permissions)
-- [Mozilla Discourse – `contextMenus` as an optional permission is not supported in Firefox](https://discourse.mozilla.org/t/contextmenus-as-an-optional-permission/64181)
+这种行为差异是 Chrome 中一个已知的限制，Chromium 团队已经讨论过：
+- [Chromium 扩展组 – 可选权限移除行为](https://groups.google.com/a/chromium.org/g/chromium-extensions/c/tqbVLwgVh58)
+- [Chrome 开发者文档 – 可选权限](https://developer.chrome.com/docs/extensions/mv3/declare_permissions/#optional-permissions)
+- [Mozilla Discourse – Firefox 不支持将 `contextMenus` 作为可选权限](https://discourse.mozilla.org/t/contextmenus-as-an-optional-permission/64181)
 
-# Manual Installation
+# 手动安装
 
 #### Chrome
-1. Download the latest release from the [GitHub Releases](https://github.com/Lanshuns/Qwacky/releases) page
-2. Unzip the downloaded file
-3. Open Chrome and go to `chrome://extensions/`
-4. Enable "Developer mode" in the top right
-5. Click "Load unpacked" and select the unzipped folder
+1. 从 [GitHub Releases](https://github.com/Lanshuns/Qwacky/releases) 页面下载最新版本
+2. 解压下载的文件
+3. 打开 Chrome 并转到 `chrome://extensions/`
+4. 在右上角启用"开发者模式"
+5. 点击"加载已解压的扩展程序"并选择解压后的文件夹
 
 #### Firefox
-1. Download the Firefox version (.xpi file) from the [GitHub Releases](https://github.com/Lanshuns/Qwacky/releases) page
-2. Open Firefox and go to `about:addons`
-3. Click the gear icon and select "Install Add-on From File..."
-4. Select the downloaded .xpi file
+1. 从 [GitHub Releases](https://github.com/Lanshuns/Qwacky/releases) 页面下载 Firefox 版本（.xpi 文件）
+2. 打开 Firefox 并转到 `about:addons`
+3. 点击齿轮图标并选择"从文件安装附加组件..."
+4. 选择下载的 .xpi 文件
 
-# Development
+# 开发
 
-### Prerequisites
-- Node.js (v16 or higher)
-- npm (v7 or higher)
+### 前提条件
+- Node.js（v16 或更高版本）
+- npm（v7 或更高版本）
 
-### Setup
+### 设置
 ```bash
-# 1. Clone the repository
+# 1. 克隆仓库
 git clone https://github.com/Lanshuns/Qwacky.git
 cd qwacky
-# 2. Install dependencies
+# 2. 安装依赖
 npm install
 ```
 
-### Development Mode
+### 开发模式
 
 ```bash
-# For Chrome
+# 对于 Chrome
 npm run dev
-# For Firefox
+# 对于 Firefox
 npm run dev:firefox
 ```
 
-### Production Build
+### 生产构建
 
 ```bash
-# For Chrome
+# 对于 Chrome
 npm run build
-# For Firefox
+# 对于 Firefox
 npm run build:firefox
 ```
 
-The built extension will be available in the `dist` directory.
+构建的扩展程序将在 `dist` 目录中可用。
 
-> **Note**: For development and temporary installation in Firefox, you can use `about:debugging` method:
-> 1. Go to `about:debugging`
-> 2. Click "This Firefox" in the left sidebar
-> 3. Click "Load Temporary Add-on"
-> 4. Select the `manifest.json` file from the unzipped folder
+> **注意**：对于 Firefox 中的开发和临时安装，您可以使用 `about:debugging` 方法：
+> 1. 转到 `about:debugging`
+> 2. 在左侧边栏中点击"This Firefox"
+> 3. 点击"加载临时附加组件"
+> 4. 从解压后的文件夹中选择 `manifest.json` 文件
 
-# Acknowledgments
+# 致谢
 
-This project is a derivative work based on DuckDuckGo's Email Protection service, which is licensed under the Apache License 2.0. The original work's copyright notice:
+本项目是基于 DuckDuckGo 的邮件保护服务的衍生作品，该服务根据 Apache License 2.0 许可。原作品的版权声明：
 
-Copyright (c) 2010-2021 Duck Duck Go, Inc.
+版权所有 (c) 2010-2021 Duck Duck Go, Inc.
 
-For the full license text, see [APACHE-LICENSE](https://github.com/duckduckgo/duckduckgo-privacy-extension/blob/main/LICENSE.md).
+完整的许可证文本，请参见 [APACHE-LICENSE](https://github.com/duckduckgo/duckduckgo-privacy-extension/blob/main/LICENSE.md)。
+
+---
+
+**English Version**: [README_en.md](README_en.md)
+**原作者项目**: [Lanshuns/Qwacky](https://github.com/Lanshuns/Qwacky)

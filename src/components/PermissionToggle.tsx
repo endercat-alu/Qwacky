@@ -394,7 +394,7 @@ export const PermissionToggle: React.FC<PermissionToggleProps> = ({
       <NoticeParagraph>{t('settings.permissions.notices.chrome.enableFeature')}</NoticeParagraph>
       <NoticeParagraph>{t('settings.permissions.notices.chrome.ifDialog')}</NoticeParagraph>
       <NoticeParagraph>{t('settings.permissions.notices.chrome.moreDetails')} <LinkText
-          href="https://github.com/Lanshuns/Qwacky?tab=readme-ov-file#browser-specific-permission-handling-and-limitations"
+          href="https://github.com/endercat-alu/Qwacky?tab=readme-ov-file#browser-specific-permission-handling-and-limitations"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -425,7 +425,7 @@ export const PermissionToggle: React.FC<PermissionToggleProps> = ({
               >
                 {t('settings.permissions.tooltip.info')}{' '}
                 <LinkText
-                  href="https://github.com/Lanshuns/Qwacky?tab=readme-ov-file#browser-specific-permission-handling-and-limitations"
+                  href="https://github.com/endercat-alu/Qwacky?tab=readme-ov-file#browser-specific-permission-handling-and-limitations"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

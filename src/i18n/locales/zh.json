@@ -111,7 +111,7 @@
       },
       "contextMenu": {
         "name": "上下文菜单",
-        "description": "`contextMenus`\nFirefox要求在安装时将此权限列在manifest的permissions块中，[了解更多](https://github.com/Lanshuns/Qwacky?tab=readme-ov-file#browser-specific-permission-handling-and-limitations)"
+        "description": "`contextMenus`\nFirefox要求在安装时将此权限列在manifest的permissions块中，[了解更多](https://github.com/endercat-alu/Qwacky?tab=readme-ov-file#browser-specific-permission-handling-and-limitations)"
       },
       "contextMenuFeatures": {
         "name": "自动填充",
