@@ -4,6 +4,7 @@ import { MdLightMode, MdDarkMode, MdLogout, MdSettings, MdDevices, MdMenu, MdAcc
 import { FaGithub } from 'react-icons/fa'
 import { useApp, ThemeMode } from '../context/AppContext'
 import { ConfirmDialog } from './ConfirmDialog'
+import { useI18n } from '../i18n/I18nContext'
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -153,6 +154,7 @@ export const Header = ({ onSettingsClick, onAddAccountClick, onChangelogClick }:
   const [accountsListOpen, setAccountsListOpen] = useState(false)
   const themeDropdownRef = useRef<HTMLDivElement>(null)
   const menuDropdownRef = useRef<HTMLDivElement>(null)
+  const { t } = useI18n()
   
   const openGitHub = () => window.open('https://github.com/Lanshuns/Qwacky', '_blank')
   const openStore = () => window.open('https://chromewebstore.google.com/detail/qwacky/kieehbhdbincplacegpjdkoglfakboeo', '_blank')
@@ -209,9 +211,9 @@ export const Header = ({ onSettingsClick, onAddAccountClick, onChangelogClick }:
             </IconButton>
             <DropdownContent isOpen={themeDropdownOpen}>
               {[
-                { mode: 'light' as const, icon: MdLightMode, label: 'Light' },
-                { mode: 'dark' as const, icon: MdDarkMode, label: 'Dark' },
-                { mode: 'system' as const, icon: MdDevices, label: 'System' }
+                { mode: 'light' as const, icon: MdLightMode, label: t('header.theme.light') },
+                { mode: 'dark' as const, icon: MdDarkMode, label: t('header.theme.dark') },
+                { mode: 'system' as const, icon: MdDevices, label: t('header.theme.system') }
               ].map(({ mode, icon: Icon, label }) => (
                 <DropdownItem
                   key={mode}
@@ -245,7 +247,7 @@ export const Header = ({ onSettingsClick, onAddAccountClick, onChangelogClick }:
                   <AccountsMenuWrapper isOpen={accountsListOpen}>
                     <DropdownItem onClick={() => setAccountsListOpen(!accountsListOpen)}>
                       <MdSwapHoriz size={20} />
-                      Switch Account
+                      {t('header.menu.switchAccount')}
                       <MdKeyboardArrowDown
                         size={20}
                         style={{
@@ -259,7 +261,7 @@ export const Header = ({ onSettingsClick, onAddAccountClick, onChangelogClick }:
                       {accounts
                         .filter(account => account.username !== currentAccount)
                         .map(account => (
-                          <AccountItem 
+                          <AccountItem
                             key={account.username}
                             onClick={() => handleSwitchAccount(account.username)}
                           >
@@ -274,23 +276,23 @@ export const Header = ({ onSettingsClick, onAddAccountClick, onChangelogClick }:
                 {accountsListOpen && <DropdownDivider />}
                 <DropdownItem onClick={() => handleMenuItemClick(onAddAccountClick)}>
                   <MdPersonAdd size={20} />
-                  Add Account
+                  {t('header.menu.addAccount')}
                 </DropdownItem>
                 <DropdownDivider />
                 
                 <DropdownItem onClick={() => handleMenuItemClick(onSettingsClick)}>
                   <MdSettings size={20} />
-                  Settings
+                  {t('header.menu.settings')}
                 </DropdownItem>
                 
                 <DropdownItem onClick={() => handleMenuItemClick(onChangelogClick)}>
                   <MdUpdate size={20} />
-                  Change log
+                  {t('header.menu.changelog')}
                 </DropdownItem>
                 
                 <DropdownItem onClick={handleLogoutClick} logout>
                   <MdLogout size={20} />
-                  Log out
+                  {t('header.menu.logout')}
                 </DropdownItem>
               </DropdownContent>
             </MenuDropdown>
@@ -300,10 +302,10 @@ export const Header = ({ onSettingsClick, onAddAccountClick, onChangelogClick }:
 
       <ConfirmDialog
         isOpen={showLogoutConfirm}
-        title="Confirm Logout"
-        message="Are you sure you want to log out?"
-        confirmLabel="Log out"
-        cancelLabel="Cancel"
+        title={t('header.menu.logoutConfirm.title')}
+        message={t('header.menu.logoutConfirm.message')}
+        confirmLabel={t('header.menu.logoutConfirm.confirm')}
+        cancelLabel={t('common.cancel')}
         onConfirm={handleLogoutConfirm}
         onCancel={() => setShowLogoutConfirm(false)}
       />

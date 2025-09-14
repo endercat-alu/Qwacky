@@ -13,7 +13,8 @@
     "default_icon": "assets/icons/qwacky.png"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "tabs"
   ],
   "optional_permissions": [
     "contextMenus",

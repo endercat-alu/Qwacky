@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { DuckService } from '../services/DuckService'
 import { MdArrowBack } from 'react-icons/md'
 import { useApp } from '../context/AppContext'
+import { useI18n } from '../i18n/I18nContext'
 
 const Container = styled.div`
   padding: 24px;
@@ -107,6 +108,7 @@ export const Login = ({ onSubmit, isAddingAccount, onBack }: LoginProps) => {
   const [loading, setLoading] = useState(false)
   const duckService = new DuckService()
   const { accounts } = useApp()
+  const { t } = useI18n()
 
   const sanitizeUsername = (input: string) => {
     return input.replace(/[^a-zA-Z0-9-_]/g, '');
@@ -157,14 +159,14 @@ export const Login = ({ onSubmit, isAddingAccount, onBack }: LoginProps) => {
       {isAddingAccount && onBack && (
         <BackButton onClick={onBack}>
           <MdArrowBack size={20} />
-          Back to Dashboard
+          {t('common.back')} {t('dashboard.title')}
         </BackButton>
       )}
-      <Message>Login to manage your <DuckText>@duck.com</DuckText> addresses</Message>
+      <Message>{t('login.message')} <DuckText>@duck.com</DuckText> {t('dashboard.addresses.title').toLowerCase()}</Message>
       <InputWrapper>
         <Input
           type="text"
-          placeholder="Enter duck username"
+          placeholder={t('login.inputPlaceholder')}
           value={username}
           onChange={handleUsernameChange}
           onKeyUp={handleKeyPress}
@@ -176,11 +178,11 @@ export const Login = ({ onSubmit, isAddingAccount, onBack }: LoginProps) => {
         <Suffix>@duck.com</Suffix>
       </InputWrapper>
       <Button onClick={handleSubmit} disabled={!username || loading}>
-        {loading ? 'Sending...' : 'Continue'}
+        {loading ? t('common.sending') || 'Sending...' : t('login.button')}
       </Button>
       {error && <ErrorMessage>{error}</ErrorMessage>}
       <VersionInfo>
-        Qwacky v1.2.0
+        {t('common.appName')} v1.2.0
       </VersionInfo>
     </Container>
   )

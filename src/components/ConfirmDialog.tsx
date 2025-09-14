@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { MdWarning, MdInfo } from 'react-icons/md';
 import { ReactNode } from 'react';
+import { useI18n } from '../i18n/I18nContext';
 
 const Overlay = styled.div`
   position: fixed;
@@ -107,14 +108,20 @@ interface ConfirmDialogProps {
 export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   title,
   message,
-  confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel',
+  confirmLabel,
+  cancelLabel,
   onConfirm,
   onCancel,
   isOpen,
   singleButton = false,
   variant = 'warning'
 }) => {
+  const { t } = useI18n();
+  
+  // 如果没有提供confirmLabel和cancelLabel，则使用默认值
+ const confirmText = confirmLabel || t('common.confirm') || 'Confirm';
+  const cancelText = cancelLabel || t('common.cancel');
+
   if (!isOpen) return null;
 
   const Icon = variant === 'info' ? MdInfo : MdWarning;
@@ -133,18 +140,18 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         <Message>{message}</Message>
         <ButtonContainer singleButton={singleButton}>
           {!singleButton && onCancel && (
-            <Button 
+            <Button
               onClick={onCancel}
               variant="primary"
             >
-              {cancelLabel}
+              {cancelText}
             </Button>
           )}
-          <Button 
+          <Button
             onClick={onConfirm}
             singleButton={singleButton}
           >
-            {confirmLabel}
+            {confirmText}
           </Button>
         </ButtonContainer>
       </Dialog>

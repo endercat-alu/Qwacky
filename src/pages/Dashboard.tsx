@@ -5,6 +5,7 @@ import { DuckService } from "../services/DuckService";
 import { useNotification } from "../components/Notification";
 import { UserInfoSection } from "../components/UserInfoSection";
 import { AddressListSection } from "../components/AddressListSection";
+import { useI18n } from "../i18n/I18nContext";
 
 const Container = styled.div`
   padding: 16px 20px;
@@ -40,6 +41,7 @@ export const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const duckService = new DuckService();
   const { showNotification, NotificationRenderer } = useNotification();
+  const { t } = useI18n();
 
   useEffect(() => {
     if (userData) {
@@ -63,7 +65,7 @@ export const Dashboard = () => {
 
   const copyToClipboard = useCallback((text: string, event?: MouseEvent) => {
     navigator.clipboard.writeText(text);
-    showNotification("Copied!", event);
+    showNotification(t('common.copied'), event);
   }, [showNotification]);
 
   const formatTime = useCallback((timestamp: number) => {
@@ -98,13 +100,13 @@ export const Dashboard = () => {
         }
         
         copyToClipboard(response.address + "@duck.com");
-        showNotification("New address generated and copied to clipboard!");
+        showNotification(t('notification.addressGenerated'));
       } else {
-        showNotification("Failed to generate address: " + (response.message || "Unknown error"));
+        showNotification(t('notification.error') + ": " + (response.message || t('notification.error')));
       }
     } catch (error) {
       console.error("Error generating address:", error);
-      showNotification("An error occurred while generating the address");
+      showNotification(t('notification.error'));
     } finally {
       setLoading(false);
     }
@@ -120,13 +122,13 @@ export const Dashboard = () => {
             ? { ...addr, notes } 
             : addr
         ));
-        showNotification("Notes updated successfully");
+        showNotification(t('notification.notesUpdated'));
       } else {
-        showNotification("Failed to update notes");
+        showNotification(t('notification.notesFailed'));
       }
     } catch (error) {
       console.error("Error updating notes:", error);
-      showNotification("An error occurred while updating notes");
+      showNotification(t('notification.error'));
     }
   };
 
@@ -136,13 +138,13 @@ export const Dashboard = () => {
       
       if (success) {
         setAddresses(addresses.filter(addr => addr.value !== addressValue));
-        showNotification("Address deleted successfully");
+        showNotification(t('notification.addressDeleted'));
       } else {
-        showNotification("Failed to delete address");
+        showNotification(t('notification.deleteFailed'));
       }
     } catch (error) {
       console.error("Error deleting address:", error);
-      showNotification("An error occurred while deleting the address");
+      showNotification(t('notification.error'));
     }
   };
 
@@ -153,13 +155,13 @@ export const Dashboard = () => {
       if (success) {
         setAddresses([]);
         setAddressesCount(0);
-        showNotification("All addresses cleared successfully");
+        showNotification(t('notification.addressClear'));
       } else {
-        showNotification("Failed to clear addresses");
+        showNotification(t('notification.clearFailed'));
       }
     } catch (error) {
       console.error("Error clearing addresses:", error);
-      showNotification("An error occurred while clearing addresses");
+      showNotification(t('notification.error'));
     }
   };
 
@@ -173,7 +175,7 @@ export const Dashboard = () => {
         copyToClipboard={copyToClipboard}
       />
       <Button onClick={generateNewAddress} disabled={loading}>
-        {loading ? "Generating..." : "Generate New Address"}
+        {loading ? t('dashboard.addresses.generating') : t('dashboard.addresses.generateButton')}
       </Button>
       <AddressListSection 
         addresses={addresses}

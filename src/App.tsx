@@ -8,6 +8,7 @@ import { Changelog } from './pages/Changelog'
 import { Header } from './components/Header'
 import { theme } from './theme'
 import { useState, useEffect } from 'react'
+import { I18nProvider } from './i18n/I18nContext'
 
 const APP_VERSION = '1.2.0'
 
@@ -180,15 +181,17 @@ export const App = () => {
   }
 
   return (
-    <ThemeProvider theme={darkMode ? theme.dark : theme.light}>
-      <Container>
-        <Header 
-          onSettingsClick={toggleSettings} 
-          onAddAccountClick={handleAddAccount}
-          onChangelogClick={toggleChangelog}
-        />
-        {renderCurrentPage()}
-      </Container>
-    </ThemeProvider>
+    <I18nProvider>
+      <ThemeProvider theme={darkMode ? theme.dark : theme.light}>
+        <Container>
+          <Header
+            onSettingsClick={toggleSettings}
+            onAddAccountClick={handleAddAccount}
+            onChangelogClick={toggleChangelog}
+          />
+          {renderCurrentPage()}
+        </Container>
+      </ThemeProvider>
+    </I18nProvider>
   )
 }

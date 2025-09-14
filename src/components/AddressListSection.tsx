@@ -2,6 +2,7 @@ import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import { MdVisibility, MdVisibilityOff, MdEdit, MdCheck, MdClose, MdDelete, MdDeleteSweep } from "react-icons/md";
 import { ConfirmDialog } from './ConfirmDialog';
+import { useI18n } from '../i18n/I18nContext';
 
 const Section = styled.div`
   margin-bottom: 32px;
@@ -25,7 +26,7 @@ const HeaderActions = styled.div`
 `;
 
 const AddressList = styled.div<{ hidden?: boolean }>`
-  background: ${(props) => props.theme.surface};
+ background: ${(props) => props.theme.surface};
   border-radius: 8px;
   padding: 12px;
   max-height: 300px;
@@ -69,6 +70,23 @@ const IconButton = styled.button`
     
     &:hover {
       color: #c62828;
+    }
+  }
+
+  &.auto {
+    background-color: ${(props) => props.theme.primary};
+    color: white;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+    
+    &:hover {
+      background-color: ${(props) => props.theme.primary}dd;
     }
   }
 `;
@@ -177,6 +195,7 @@ export const AddressListSection: React.FC<AddressListSectionProps> = ({
   const [editing, setEditing] = useState<EditingState | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const { t } = useI18n();
 
   const handleEditNotes = useCallback((address: StoredAddress) => {
     setEditing({
@@ -184,6 +203,23 @@ export const AddressListSection: React.FC<AddressListSectionProps> = ({
       notes: address.notes || ''
     });
   }, []);
+
+  const handleAutoFillNotes = useCallback(async () => {
+    if (!editing) return;
+    
+    try {
+      // Get current tab URL from background script
+      const response = await chrome.runtime.sendMessage({ action: 'getCurrentTabDomain' });
+      if (response && response.domain) {
+        setEditing({
+          ...editing,
+          notes: response.domain
+        });
+      }
+    } catch (error) {
+      console.error('Error getting current tab domain:', error);
+    }
+  }, [editing]);
 
   const handleSaveNotes = useCallback(async () => {
     if (!editing) return;
@@ -219,7 +255,7 @@ export const AddressListSection: React.FC<AddressListSectionProps> = ({
   const addressList = useMemo(() => {
     if (addresses.length === 0) {
       return (
-        <p>No addresses generated yet. Click the button above to generate your first address.</p>
+        <p>{t('dashboard.addresses.empty')}</p>
       );
     }
 
@@ -255,19 +291,26 @@ export const AddressListSection: React.FC<AddressListSectionProps> = ({
                 <NotesInput 
                   value={editing.notes}
                   onChange={(e) => setEditing({...editing, notes: e.target.value})}
-                  placeholder="Add notes for this address..."
-                  aria-label="Edit notes for this address"
+                  placeholder={t('dashboard.addresses.notes.placeholder')}
+                  aria-label={t('dashboard.addresses.notes.placeholder')}
                 />
                 <NotesActions>
-                  <IconButton 
+                  <IconButton
+                    className="auto"
+                    onClick={handleAutoFillNotes}
+                    aria-label={t('common.auto')}
+                  >
+                    <span>A</span>
+                  </IconButton>
+                  <IconButton
                     onClick={handleSaveNotes}
-                    aria-label="Save notes"
+                    aria-label={t('common.save')}
                   >
                     <MdCheck size={18} />
                   </IconButton>
-                  <IconButton 
+                  <IconButton
                     onClick={handleCancelEdit}
-                    aria-label="Cancel editing"
+                    aria-label={t('common.cancel')}
                   >
                     <MdClose size={18} />
                   </IconButton>
@@ -278,19 +321,19 @@ export const AddressListSection: React.FC<AddressListSectionProps> = ({
                 {address.notes ? (
                   <Notes>{address.notes}</Notes>
                 ) : (
-                  <EmptyNotes>No notes</EmptyNotes>
+                  <EmptyNotes>{t('dashboard.addresses.notes.empty')}</EmptyNotes>
                 )}
                 <ButtonsContainer>
                   <IconButton 
                     onClick={() => handleEditNotes(address)}
-                    aria-label="Edit notes"
+                    aria-label={t('common.edit')}
                   >
                     <MdEdit size={18} />
                   </IconButton>
                   <IconButton 
                     className="delete" 
                     onClick={() => handleDeleteClick(address.value)}
-                    aria-label="Delete address"
+                    aria-label={t('common.delete')}
                   >
                     <MdDelete size={18} />
                   </IconButton>
@@ -301,26 +344,26 @@ export const AddressListSection: React.FC<AddressListSectionProps> = ({
         ))}
       </AddressList>
     );
-  }, [addresses, hideAddresses, editing, copyToClipboard, formatTime, handleEditNotes, handleSaveNotes, handleCancelEdit, handleDeleteClick]);
+  }, [addresses, hideAddresses, editing, copyToClipboard, formatTime, handleEditNotes, handleSaveNotes, handleCancelEdit, handleDeleteClick, t]);
 
   return (
     <>
       <Section>
         <SectionHeader>
-          <h2 id="addresses-heading">Generated Addresses</h2>
+          <h2 id="addresses-heading">{t('dashboard.addresses.title')}</h2>
           <HeaderActions>
             {addresses.length > 0 && (
               <IconButton 
                 className="clear"
                 onClick={() => setShowClearConfirm(true)}
-                aria-label="Clear all addresses"
+                aria-label={t('dashboard.addresses.clearAll')}
               >
                 <MdDeleteSweep size={24} />
               </IconButton>
             )}
             <IconButton 
               onClick={toggleHideAddresses}
-              aria-label={hideAddresses ? "Show addresses" : "Hide addresses"}
+              aria-label={hideAddresses ? t('dashboard.addresses.show') : t('dashboard.addresses.hide')}
               aria-expanded={!hideAddresses}
               aria-controls="addresses-list"
             >
@@ -335,20 +378,20 @@ export const AddressListSection: React.FC<AddressListSectionProps> = ({
 
       <ConfirmDialog
         isOpen={deleteConfirm !== null}
-        title="Delete Address"
-        message={`Are you sure you want to delete this address\n(${deleteConfirm}@duck.com)?`}
-        confirmLabel="Delete"
-        cancelLabel="Cancel"
+        title={t('dashboard.addresses.deleteConfirm.title')}
+        message={`${t('dashboard.addresses.deleteConfirm.message')}\n(${deleteConfirm}@duck.com)?`}
+        confirmLabel={t('dashboard.addresses.deleteConfirm.confirm')}
+        cancelLabel={t('common.cancel')}
         onConfirm={handleDeleteConfirm}
         onCancel={() => setDeleteConfirm(null)}
       />
 
       <ConfirmDialog
         isOpen={showClearConfirm}
-        title="Clear All Addresses"
-        message={"Are you sure you want to clear all addresses?\n\nThis action cannot be undone."}
-        confirmLabel="Clear All"
-        cancelLabel="Cancel"
+        title={t('dashboard.addresses.clearConfirm.title')}
+        message={t('dashboard.addresses.clearConfirm.message')}
+        confirmLabel={t('dashboard.addresses.clearConfirm.confirm')}
+        cancelLabel={t('common.cancel')}
         onConfirm={handleClearConfirm}
         onCancel={() => setShowClearConfirm(false)}
       />

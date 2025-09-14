@@ -247,6 +247,25 @@ api.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     return true
   }
 
+  // Handle getCurrentTabDomain message
+  if (message.action === 'getCurrentTabDomain') {
+    // Get the current active tab
+    (api as any).tabs.query({ active: true, currentWindow: true }, (tabs: any) => {
+      if (tabs && tabs[0] && tabs[0].url) {
+        try {
+          const domain = new URL(tabs[0].url).hostname;
+          sendResponse({ domain });
+        } catch (error) {
+          console.error('Error parsing URL:', error);
+          sendResponse({ domain: '' });
+        }
+      } else {
+        sendResponse({ domain: '' });
+      }
+    });
+    return true; // Keep the message channel open for async response
+  }
+
   return false
 })
 

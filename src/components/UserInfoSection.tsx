@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { UserData } from '../types';
+import { useI18n } from '../i18n/I18nContext';
 
 const Section = styled.div`
   margin-bottom: 32px;
@@ -70,12 +71,13 @@ interface UserInfoSectionProps {
   copyToClipboard: (text: string, event?: MouseEvent) => void;
 }
 
-export const UserInfoSection: React.FC<UserInfoSectionProps> = ({ 
-  userData, 
-  addressesCount, 
-  copyToClipboard 
+export const UserInfoSection: React.FC<UserInfoSectionProps> = ({
+  userData,
+  addressesCount,
+  copyToClipboard
 }) => {
   const [hideUserInfo, setHideUserInfo] = useState(false);
+  const { t } = useI18n();
 
   const maskText = (text: string) => "*".repeat(text.length);
 
@@ -86,10 +88,10 @@ export const UserInfoSection: React.FC<UserInfoSectionProps> = ({
   return (
     <Section>
       <SectionHeader>
-        <h2 id="user-info-heading">User Information</h2>
+        <h2 id="user-info-heading">{t('dashboard.userInfo.title')}</h2>
         <IconButton 
           onClick={toggleHideUserInfo}
-          aria-label={hideUserInfo ? "Show user information" : "Hide user information"}
+          aria-label={hideUserInfo ? t('dashboard.addresses.show') : t('dashboard.addresses.hide')}
           aria-expanded={!hideUserInfo}
           aria-controls="user-info-content"
         >
@@ -98,7 +100,7 @@ export const UserInfoSection: React.FC<UserInfoSectionProps> = ({
       </SectionHeader>
       <div id="user-info-content" aria-labelledby="user-info-heading">
         <InfoItem>
-          <label className="highlight" id="username-label">Duck Username</label>
+          <label className="highlight" id="username-label">{t('dashboard.userInfo.username')}</label>
           <div 
             onClick={(e) => copyToClipboard(`${userData.user.username}@duck.com`, e.nativeEvent)}
             role="button"
@@ -115,7 +117,7 @@ export const UserInfoSection: React.FC<UserInfoSectionProps> = ({
           </div>
         </InfoItem>
         <InfoItem>
-          <label className="highlight" id="email-label">Forwarding Email</label>
+          <label className="highlight" id="email-label">{t('dashboard.userInfo.email')}</label>
           <div 
             onClick={(e) => copyToClipboard(userData.user.email, e.nativeEvent)}
             role="button"
@@ -132,14 +134,14 @@ export const UserInfoSection: React.FC<UserInfoSectionProps> = ({
           </div>
         </InfoItem>
         <InfoItem>
-          <label className="highlight" id="count-label">Total Generated</label>
+          <label className="highlight" id="count-label">{t('dashboard.userInfo.totalGenerated')}</label>
           <div aria-labelledby="count-label">
             <span>{addressesCount}</span>
           </div>
         </InfoItem>
         {userData.invites.length > 0 && (
           <InfoItem>
-            <label id="invites-label">Invites</label>
+            <label id="invites-label">{t('dashboard.userInfo.invites')}</label>
             <div aria-labelledby="invites-label">
               <span>{userData.invites.length}</span>
             </div>

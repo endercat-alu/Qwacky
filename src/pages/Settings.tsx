@@ -5,13 +5,14 @@ import { DuckService } from "../services/DuckService";
 import { usePermissions, PERMISSIONS, ALL_PERMISSIONS } from "../context/PermissionContext";
 import { PermissionToggle } from "../components/PermissionToggle";
 import { useNotification } from "../components/Notification";
+import { useI18n } from "../i18n/I18nContext";
 
 declare const browser: typeof chrome;
 const api = typeof browser !== 'undefined' ? browser : chrome;
 const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
 
 const Container = styled.div`
-  padding: 16px 20px;
+ padding: 16px 20px;
 `;
 
 const Section = styled.div`
@@ -108,6 +109,7 @@ export const Settings = ({ onBack }: SettingsProps) => {
   const duckService = new DuckService();
   const [loading, setLoading] = useState<Record<string, boolean>>({});
   const { showNotification, NotificationRenderer } = useNotification();
+  const { t } = useI18n();
 
   useEffect(() => {
     const loadPermissionStates = async () => {
@@ -162,7 +164,7 @@ export const Settings = ({ onBack }: SettingsProps) => {
 
   const togglePermission = useCallback(async (permission: string, enabled: boolean) => {
     if (PERMISSIONS[permission as keyof typeof PERMISSIONS]?.isRequired) {
-      showNotification('This permission is required and cannot be changed');
+      showNotification(t('settings.permissions.required'));
       return;
     }
     
@@ -190,7 +192,7 @@ export const Settings = ({ onBack }: SettingsProps) => {
     } finally {
       setLoading(prev => ({ ...prev, [permission]: false }));
     }
-  }, [showNotification]);
+  }, [showNotification, t]);
 
   const handleExportAddressesJSON = async () => {
     try {
@@ -199,7 +201,7 @@ export const Settings = ({ onBack }: SettingsProps) => {
       const addresses = await duckService.getAddresses();
       
       if (!addresses || addresses.length === 0) {
-        showNotification("No addresses to export");
+        showNotification(t('settings.backup.noAddresses'));
         setLoading(prev => ({ ...prev, export: false }));
         return;
       }
@@ -214,7 +216,7 @@ export const Settings = ({ onBack }: SettingsProps) => {
       downloadAnchorNode.remove();
 
     } catch (error) {
-      showNotification("Failed to export addresses");
+      showNotification(t('settings.backup.exportFailed'));
     } finally {
       setLoading(prev => ({ ...prev, export: false }));
     }
@@ -227,7 +229,7 @@ export const Settings = ({ onBack }: SettingsProps) => {
       const addresses = await duckService.getAddresses();
       
       if (!addresses || addresses.length === 0) {
-        showNotification("No addresses to export");
+        showNotification(t('settings.backup.noAddresses'));
         setLoading(prev => ({ ...prev, exportCSV: false }));
         return;
       }
@@ -242,7 +244,7 @@ export const Settings = ({ onBack }: SettingsProps) => {
       downloadAnchorNode.remove();
       
     } catch (error) {
-      showNotification("Failed to export addresses as CSV");
+      showNotification(t('settings.backup.exportCSVFailed'));
     } finally {
       setLoading(prev => ({ ...prev, exportCSV: false }));
     }
@@ -259,15 +261,15 @@ export const Settings = ({ onBack }: SettingsProps) => {
       const result = await duckService.importAddresses(text);
       
       if (result.success) {
-        setImportResult(`Successfully imported ${result.count} addresses`);
-        showNotification(`Successfully imported ${result.count} addresses`);
+        setImportResult(t('settings.backup.importSuccess', { count: result.count }));
+        showNotification(t('settings.backup.importSuccess', { count: result.count }));
       } else {
-        setImportResult(`Import failed: ${result.error || 'Unknown error'}`);
-        showNotification(`Import failed: ${result.error || 'Unknown error'}`);
+        setImportResult(`${t('settings.backup.importFailed')}: ${result.error || 'Unknown error'}`);
+        showNotification(`${t('settings.backup.importFailed')}: ${result.error || 'Unknown error'}`);
       }
     } catch (error) {
-      setImportResult("Import failed, invalid file");
-      showNotification("Import failed, invalid file");
+      setImportResult(t('settings.backup.invalidFile'));
+      showNotification(t('settings.backup.invalidFile'));
     } finally {
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
@@ -309,7 +311,7 @@ export const Settings = ({ onBack }: SettingsProps) => {
     }
 
     if (!text) {
-      showNotification("No valid data found in clipboard");
+      showNotification(t('settings.backup.noValidData'));
       return;
     }
 
@@ -318,15 +320,15 @@ export const Settings = ({ onBack }: SettingsProps) => {
       const result = await duckService.importAddresses(text);
       
       if (result.success) {
-        setImportResult(`Successfully imported ${result.count} addresses`);
-        showNotification(`Successfully imported ${result.count} addresses`);
+        setImportResult(t('settings.backup.importSuccess', { count: result.count }));
+        showNotification(t('settings.backup.importSuccess', { count: result.count }));
       } else {
-        setImportResult(`Import failed: ${result.error || 'Unknown error'}`);
-        showNotification(`Import failed: ${result.error || 'Unknown error'}`);
+        setImportResult(`${t('settings.backup.importFailed')}: ${result.error || 'Unknown error'}`);
+        showNotification(`${t('settings.backup.importFailed')}: ${result.error || 'Unknown error'}`);
       }
     } catch (error) {
-      setImportResult("Import failed, invalid data");
-      showNotification("Import failed, invalid data");
+      setImportResult(t('settings.backup.invalidData'));
+      showNotification(t('settings.backup.invalidData'));
     } finally {
       setLoading(prev => ({ ...prev, import: false }));
     }
@@ -344,12 +346,12 @@ export const Settings = ({ onBack }: SettingsProps) => {
       {onBack && (
         <BackButton onClick={onBack}>
           <MdArrowBack size={20} />
-          Back to Dashboard
+          {t('common.back')} {t('dashboard.title')}
         </BackButton>
       )}
       <Section>
         <SectionHeader>
-          <h2><MdDescription size={20} style={{ marginRight: '8px', color: '#ff9f19' }} />Backup & Restore</h2>
+          <h2><MdDescription size={20} style={{ marginRight: '8px', color: '#ff9f19' }} />{t('settings.backup.title')}</h2>
         </SectionHeader>
         
         <ExportButtonsContainer>
@@ -358,14 +360,14 @@ export const Settings = ({ onBack }: SettingsProps) => {
             disabled={loading.export}
           >
             <MdDownload size={20} style={{ color: '#ff9f19' }} />
-            {loading.export ? 'Exporting...' : 'Export as JSON'}
+            {loading.export ? t('settings.backup.exporting') : t('settings.backup.exportJSON')}
           </BackupButton>
           <BackupButton 
             onClick={handleExportAddressesCSV}
             disabled={loading.exportCSV}
           >
             <MdDownload size={20} style={{ color: '#ff9f19' }} />
-            {loading.exportCSV ? 'Exporting...' : 'Export as CSV'}
+            {loading.exportCSV ? t('settings.backup.exporting') : t('settings.backup.exportCSV')}
           </BackupButton>
         </ExportButtonsContainer>
         <BackupButtonsContainer>
@@ -377,12 +379,12 @@ export const Settings = ({ onBack }: SettingsProps) => {
             {isFirefox ? (
               <>
                 <MdContentPaste size={20} style={{ color: '#ff9f19' }} />
-                {loading.import ? 'Importing...' : 'Press Ctrl+V to paste exported file'}
+                {loading.import ? t('settings.backup.importing') : t('settings.backup.importFirefox')}
               </>
             ) : (
               <>
                 <MdFileUpload size={20} style={{ color: '#ff9f19' }} />
-                {loading.import ? 'Importing...' : 'Import Addresses (JSON or CSV)'}
+                {loading.import ? t('settings.backup.importing') : t('settings.backup.import')}
               </>
             )}
           </BackupButton>
@@ -401,7 +403,7 @@ export const Settings = ({ onBack }: SettingsProps) => {
       </Section>
       <Section>
         <SectionHeader>
-          <h2><MdSecurity size={20} style={{ marginRight: '8px', color: '#ff9f19' }} />Permissions</h2>
+          <h2><MdSecurity size={20} style={{ marginRight: '8px', color: '#ff9f19' }} />{t('settings.permissions.title')}</h2>
         </SectionHeader>
         {ALL_PERMISSIONS.map(permission => (
           <PermissionToggle
@@ -415,7 +417,7 @@ export const Settings = ({ onBack }: SettingsProps) => {
         ))}
       </Section>
       <VersionInfo>
-        Qwacky v1.2.0
+        {t('common.appName')} v1.2.0
       </VersionInfo>
       <NotificationRenderer />
     </Container>

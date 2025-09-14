@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { MdArrowBack } from 'react-icons/md';
+import { useI18n } from '../i18n/I18nContext';
 
 const Container = styled.div`
   padding: 16px 20px;
@@ -125,6 +126,7 @@ export const Changelog = ({ onBack }: ChangelogProps) => {
   const [changelog, setChangelog] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useI18n();
 
   useEffect(() => {
     const fetchChangelog = async () => {
@@ -138,7 +140,7 @@ export const Changelog = ({ onBack }: ChangelogProps) => {
         setChangelog(parsedHtml);
       } catch (err) {
         console.error('Error loading changelog:', err);
-        setError('Could not load changelog. Please try again later.');
+        setError(error || t('changelog.error'));
       } finally {
         setLoading(false);
       }
@@ -151,10 +153,10 @@ export const Changelog = ({ onBack }: ChangelogProps) => {
     <Container>
       <BackButton onClick={onBack}>
         <MdArrowBack size={20} />
-        Back to Dashboard
+        {t('common.back')} {t('dashboard.title')}
       </BackButton>
 
-      {loading && <LoadingMessage>Loading changelog...</LoadingMessage>}
+      {loading && <LoadingMessage>{t('changelog.loading')}</LoadingMessage>}
       {error && <ErrorMessage>{error}</ErrorMessage>}
       
       {!loading && !error && (

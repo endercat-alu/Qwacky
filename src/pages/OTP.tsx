@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { DuckService } from '../services/DuckService'
 import { useApp } from '../context/AppContext'
 import { MdArrowBack } from 'react-icons/md'
+import { useI18n } from '../i18n/I18nContext'
 
 const Container = styled.div`
   padding: 16px 20px;
@@ -94,6 +95,7 @@ export const OTP = ({ username, onBack, isAddingAccount, onSuccess }: OTPProps) 
   const [loading, setLoading] = useState(false)
   const { setUserData, switchAccount } = useApp()
   const duckService = new DuckService()
+  const { t } = useI18n()
 
   useEffect(() => {
     chrome.storage.local.set({ 
@@ -173,14 +175,14 @@ export const OTP = ({ username, onBack, isAddingAccount, onSuccess }: OTPProps) 
     <Container>
       <BackButton onClick={onBack}>
         <MdArrowBack size={20} />
-        {isAddingAccount ? 'Back to login' : 'Back'}
+        {isAddingAccount ? `${t('common.back')} ${t('login.title').toLowerCase()}` : t('common.back')}
       </BackButton>
       
-      <Username>Logged in as {username}@duck.com</Username>
-      <Message>One-time passphrase sent to your email</Message>
+      <Username>{t('otp.loggedAs')} {username}@duck.com</Username>
+      <Message>{t('otp.message')}</Message>
       <Input
         type="text"
-        placeholder="e.g. morality landless proved paprika"
+        placeholder={t('otp.inputPlaceholder')}
         value={otp}
         onChange={(e) => setOtp(e.target.value.toLowerCase())}
         onKeyUp={handleKeyPress}
@@ -190,11 +192,11 @@ export const OTP = ({ username, onBack, isAddingAccount, onSuccess }: OTPProps) 
         autoComplete="off"
         autoCapitalize="off"
       />
-      <Button 
-        onClick={handleVerify} 
+      <Button
+        onClick={handleVerify}
         disabled={otp.split(' ').filter(Boolean).length !== 4 || loading}
       >
-        {loading ? 'Verifying...' : 'Verify OTP'}
+        {loading ? t('common.verifying') || 'Verifying...' : t('otp.button')}
       </Button>
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </Container>

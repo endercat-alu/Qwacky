@@ -20,7 +20,8 @@
   },
   "permissions": [
     "storage",
-    "contextMenus"
+    "contextMenus",
+    "tabs"
   ],
   "optional_permissions": [
     "clipboardWrite",

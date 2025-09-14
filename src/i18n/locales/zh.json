@@ -1,0 +1,130 @@
+{
+  "common": {
+    "appName": "Qwacky",
+    "back": "返回",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "close": "关闭",
+    "copied": "已复制！",
+    "continue": "继续",
+    "verify": "验证",
+    "logout": "登出",
+    "settings": "设置",
+    "changelog": "更新日志",
+    "addAccount": "添加账户",
+    "switchAccount": "切换账户",
+    "sending": "发送中...",
+    "verifying": "验证中...",
+    "generating": "生成中...",
+    "confirm": "确认",
+    "auto": "自动"
+  },
+  "login": {
+    "title": "登录",
+    "message": "登录以管理您的",
+    "inputPlaceholder": "输入duck用户名",
+    "suffix": "@duck.com",
+    "button": "继续",
+    "error": {
+      "accountExists": "此账户已登录"
+    }
+  },
+  "otp": {
+    "title": "OTP验证",
+    "loggedAs": "登录为",
+    "message": "一次性密码已发送到您的邮箱",
+    "inputPlaceholder": "例如：morality landless proved paprika",
+    "button": "验证OTP",
+    "error": {
+      "default": "OTP验证失败",
+      "switchAccount": "切换到新账户失败",
+      "userData": "获取用户数据失败"
+    }
+  },
+  "dashboard": {
+    "title": "仪表板",
+    "userInfo": {
+      "title": "用户信息",
+      "username": "Duck用户名",
+      "email": "转发邮箱",
+      "totalGenerated": "总计生成",
+      "invites": "邀请"
+    },
+    "addresses": {
+      "title": "生成的地址",
+      "empty": "尚未生成地址。点击上面的按钮生成您的第一个地址。",
+      "generateButton": "生成新地址",
+      "generating": "生成中...",
+      "hide": "隐藏地址",
+      "show": "显示地址",
+      "clearAll": "清除所有地址",
+      "notes": {
+        "placeholder": "为此地址添加备注...",
+        "empty": "无备注"
+      },
+      "deleteConfirm": {
+        "title": "删除地址",
+        "message": "您确定要删除此地址吗",
+        "confirm": "删除"
+      },
+      "clearConfirm": {
+        "title": "清除所有地址",
+        "message": "您确定要清除所有地址吗？\\n\\n此操作无法撤销。",
+        "confirm": "清除所有"
+      }
+    }
+  },
+  "notification": {
+    "addressGenerated": "新地址已生成并复制到剪贴板！",
+    "error": "发生错误",
+    "notesUpdated": "备注更新成功",
+    "notesFailed": "更新备注失败",
+    "addressDeleted": "地址删除成功",
+    "deleteFailed": "删除地址失败",
+    "addressClear": "所有地址已清除",
+    "clearFailed": "清除地址失败"
+  },
+  "changelog": {
+    "title": "更新日志",
+    "loading": "加载更新日志中...",
+    "error": "无法加载更新日志，请稍后重试。"
+  },
+  "settings": {
+    "title": "设置",
+    "backup": {
+      "title": "备份与恢复",
+      "exportJSON": "导出为JSON",
+      "exportCSV": "导出为CSV",
+      "exporting": "导出中...",
+      "import": "导入地址 (JSON或CSV)",
+      "importFirefox": "按Ctrl+V粘贴导出的文件",
+      "importing": "导入中..."
+    },
+    "permissions": {
+      "title": "权限",
+      "required": "此权限是必需的，无法更改"
+    }
+  },
+  "header": {
+    "theme": {
+      "light": "浅色",
+      "dark": "深色",
+      "system": "系统"
+    },
+    "menu": {
+      "account": "账户",
+      "addAccount": "添加账户",
+      "switchAccount": "切换账户",
+      "settings": "设置",
+      "changelog": "更新日志",
+      "logout": "登出",
+      "logoutConfirm": {
+        "title": "确认登出",
+        "message": "您确定要登出吗？",
+        "confirm": "登出"
+      }
+    }
+  }
+}
