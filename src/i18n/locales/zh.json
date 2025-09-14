@@ -104,7 +104,51 @@
     },
     "permissions": {
       "title": "权限",
-      "required": "此权限是必需的，无法更改"
+      "required": "此权限是必需的，无法更改",
+      "storage": {
+        "name": "存储",
+        "description": "`storage`\n扩展程序正常运行所必需的权限，用于在本地存储和检索数据"
+      },
+      "contextMenu": {
+        "name": "上下文菜单",
+        "description": "`contextMenus`\nFirefox要求在安装时将此权限列在manifest的permissions块中，[了解更多](https://github.com/Lanshuns/Qwacky?tab=readme-ov-file#browser-specific-permission-handling-and-limitations)"
+      },
+      "contextMenuFeatures": {
+        "name": "自动填充",
+        "description": "`activeTab`、`clipboardWrite`和`scripting`\n在上下文菜单中启用\"自动填充Duck地址\"选项，用于生成并复制duck地址到剪贴板",
+        "firefoxInfo": "`activeTab`、`clipboardWrite`和`scripting`\n在上下文菜单中启用\"自动填充Duck地址\"选项，用于生成并复制duck地址到剪贴板",
+        "chromeInfo": "`contextMenus`、`activeTab`、`clipboardWrite`和`scripting`\n在上下文菜单中启用\"自动填充Duck地址\"选项，用于生成并复制duck地址到剪贴板"
+      }
+    },
+    "notices": {
+      "firefox": {
+        "enableFeature": "要启用此功能：",
+        "step1": "1. Firefox将显示权限请求 - 点击'允许'",
+        "step2": "2. 返回扩展程序并再次切换该功能",
+        "disableLater": "您可以随时禁用此功能。"
+      },
+      "chrome": {
+        "differentHandling": "Chrome处理权限的方式与Firefox不同。",
+        "enableFeature": "要启用此功能，Chrome将显示一次权限请求。点击'完成'后，可能会出现权限对话框。",
+        "ifDialog": "如果您看到权限对话框，请点击'允许'，然后返回扩展程序并再次切换该功能。",
+        "moreDetails": "更多详情，请参见：",
+        "readMore": "浏览器特定的权限处理和限制"
+      }
+    },
+    "status": {
+      "permissionDenied": "权限请求被拒绝",
+      "reloading": "正在重新加载以应用更改...",
+      "enableFailed": "启用功能失败",
+      "disabling": "正在禁用{{name}}...",
+      "disableFailed": "禁用功能失败",
+      "error": "发生错误"
+    },
+    "notices": {
+      "title": "权限通知"
+    },
+    "tooltip": {
+      "info": "浏览器额外权限请求只有在尚未授予权限时才会出现一次。",
+      "readMore": "了解更多"
     }
   },
   "header": {

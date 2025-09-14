@@ -104,7 +104,51 @@
     },
     "permissions": {
       "title": "Permissions",
-      "required": "This permission is required and cannot be changed"
+      "required": "This permission is required and cannot be changed",
+      "storage": {
+        "name": "Storage",
+        "description": "`storage`\nRequired for the extension to function properly, to store and retrieve data locally"
+      },
+      "contextMenu": {
+        "name": "Context Menu",
+        "description": "`contextMenus`\nFirefox requires this permission to be listed in the manifest's permissions block at install time, [Read More](https://github.com/Lanshuns/Qwacky?tab=readme-ov-file#browser-specific-permission-handling-and-limitations)"
+      },
+      "contextMenuFeatures": {
+        "name": "Autofill",
+        "description": "`activeTab`, `clipboardWrite` and `scripting`\nEnables \"Autofill Duck Address\" option in the context menu, To generate and copy duck address to the clipboard",
+        "firefoxInfo": "`activeTab`, `clipboardWrite` and `scripting`\nEnables \"Autofill Duck Address\" option in the context menu, To generate and copy duck address to the clipboard",
+        "chromeInfo": "`contextMenus`, `activeTab`, `clipboardWrite` and `scripting`\nEnables \"Autofill Duck Address\" option in the context menu, To generate and copy duck address to the clipboard"
+      }
+    },
+    "notices": {
+      "firefox": {
+        "enableFeature": "To enable this feature:",
+        "step1": "1. Firefox will show a permissions request - click 'Allow'",
+        "step2": "2. Return to the extension and toggle the feature again",
+        "disableLater": "You can disable this feature anytime later."
+      },
+      "chrome": {
+        "differentHandling": "Chrome handles permissions differently than Firefox.",
+        "enableFeature": "To enable this feature, Chrome will show a permission request once. After clicking 'Done', a permissions dialog may appear.",
+        "ifDialog": "If you see a permissions dialog, click 'Allow' then return to the extension and toggle the feature again.",
+        "moreDetails": "For more details, see:",
+        "readMore": "Browser-Specific Permission Handling and Limitations"
+      }
+    },
+    "status": {
+      "permissionDenied": "Permission request was denied",
+      "reloading": "Reloading to apply changes...",
+      "enableFailed": "Failed to enable feature",
+      "disabling": "Disabling {{name}}...",
+      "disableFailed": "Failed to disable feature",
+      "error": "An error occurred"
+    },
+    "notices": {
+      "title": "Permissions Notice"
+    },
+    "tooltip": {
+      "info": "Browser additional permissions request will only appear once if not already granted.",
+      "readMore": "Read More"
     }
   },
   "header": {

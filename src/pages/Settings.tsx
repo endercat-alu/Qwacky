@@ -110,6 +110,23 @@ export const Settings = ({ onBack }: SettingsProps) => {
   const [loading, setLoading] = useState<Record<string, boolean>>({});
   const { showNotification, NotificationRenderer } = useNotification();
   const { t } = useI18n();
+  // Create translated permissions object
+  const translatedPermissions = {
+    storage: {
+      name: t('settings.permissions.storage.name'),
+      description: t('settings.permissions.storage.description')
+    },
+    contextMenu: {
+      name: t('settings.permissions.contextMenu.name'),
+      description: t('settings.permissions.contextMenu.description')
+    },
+    contextMenuFeatures: {
+      name: t('settings.permissions.contextMenuFeatures.name'),
+      description: navigator.userAgent.toLowerCase().includes('firefox')
+        ? t('settings.permissions.contextMenuFeatures.firefoxInfo')
+        : t('settings.permissions.contextMenuFeatures.chromeInfo')
+    }
+  };
 
   useEffect(() => {
     const loadPermissionStates = async () => {
@@ -408,8 +425,8 @@ export const Settings = ({ onBack }: SettingsProps) => {
         {ALL_PERMISSIONS.map(permission => (
           <PermissionToggle
             key={permission}
-            name={PERMISSIONS[permission].name}
-            description={PERMISSIONS[permission].description}
+            name={translatedPermissions[permission].name}
+            description={translatedPermissions[permission].description}
             isEnabled={permission === 'storage' || permission === 'contextMenu' ? true : permissionState[permission] || false}
             onChange={(enabled) => togglePermission(permission, enabled)}
             disabled={false}
